@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O Encontro dos Mundos Diferentes</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #030613;
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+      position: relative;
+      user-select: none;
+      color: #e2e8f0;
+    }
+
+    /* Canvas Cósmico Fundo */
+    #cosmicCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* --- ESTILOS DO ENVELOPE (TELA 1) --- */
+    #screen-envelope {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    /* Pulsação Prateada Suave */
+    @keyframes softSilverPulse {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(226, 232, 240, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.05);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(226, 232, 240, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    .silver-border-glow {
+      position: relative;
+      padding: 3px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(51, 65, 85, 0.6), rgba(226, 232, 240, 0.4), rgba(148, 163, 184, 0.3));
+      animation: softSilverPulse 5s ease-in-out infinite;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 360px;
+      height: 240px;
+      background: linear-gradient(135deg, #ba925d 0%, #8c6838 100%);
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+
+    .flap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 0;
+      border-left: 180px solid transparent;
+      border-right: 180px solid transparent;
+      border-top: 135px solid #7a582b;
+      transform-origin: top;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 5;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    }
+
+    .pocket-left {
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 0;
+      border-left: 180px solid #94713e;
+      border-top: 120px solid transparent;
+      border-bottom: 120px solid #94713e;
+      z-index: 3;
+    }
+
+    .pocket-right {
+      position: absolute; bottom: 0; right: 0;
+      width: 0; height: 0;
+      border-right: 180px solid #94713e;
+      border-top: 120px solid transparent;
+      border-bottom: 120px solid #94713e;
+      z-index: 3;
+    }
+
+    .pocket-bottom {
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 0;
+      border-left: 180px solid transparent;
+      border-right: 180px solid transparent;
+      border-bottom: 125px solid #805e2e;
+      z-index: 4;
+    }
+
+    /* Lacre Ouro Escuro com Texto de Prata/Ferro */
+    .wax-seal-gold {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 68px;
+      height: 68px;
+      background: radial-gradient(circle at 35% 35%, #92400e 0%, #451a03 100%);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 6;
+      transition: transform 0.3s ease, opacity 0.4s ease;
+      border: 2px solid #b45309;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(254, 243, 199, 0.3);
+    }
+
+    .wax-seal-gold span {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 40%, #64748b 80%, #334155 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+
+    .wax-seal-gold:hover {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    .envelope-wrapper.open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.open .wax-seal-gold {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .silver-border-glow.zoom-effect {
+      animation: zoomInCosmic 0.9s forwards cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes zoomInCosmic {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2.8); opacity: 0; }
+    }
+
+    /* --- ESTILOS DO CARD MUNDOS DIFERENTES (TELA 2) --- */
+    .silver-text-glow {
+      background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 30%, #94a3b8 60%, #ffffff 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(226, 232, 240, 0.4);
+    }
+
+    .glass-card {
+      background: rgba(10, 15, 30, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: #f8fafc;
+      position: relative;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      animation: softSilverPulse 4.5s ease-in-out infinite;
+    }
+
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.2); border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(203,213,225,0.7) 50%, rgba(148,163,184,0.4) 100%);
+      border-radius: 10px;
+    }
+
+    .next-card-btn {
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(148,163,184,0.06) 50%, rgba(15,23,42,0.3) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 12px rgba(226, 232, 240, 0.15);
+      transition: all 0.4s ease;
+      backdrop-filter: blur(8px);
+    }
+    .next-card-btn:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+    }
+
+    input[type=range] { -webkit-appearance: none; background: transparent; }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%; height: 6px; cursor: pointer;
+      background: linear-gradient(90deg, #334155, #cbd5e1, #ffffff, #94a3b8);
+      border-radius: 3px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      height: 18px; width: 18px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #94a3b8, #334155);
+      cursor: pointer; -webkit-appearance: none; margin-top: -6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas Cósmico de Fundo com Estrelas Cadentes -->
+  <canvas id="cosmicCanvas"></canvas>
+
+  <!-- TELA 1: ENVELOPE FECHADO -->
+  <div id="screen-envelope">
+    <div class="silver-border-glow" id="borderContainer">
+      <div class="envelope-wrapper" id="envelope">
+        <div class="flap"></div>
+        <div class="wax-seal-gold" id="seal"><span>Abrir</span></div>
+        <div class="pocket-left"></div>
+        <div class="pocket-right"></div>
+        <div class="pocket-bottom"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA 2: CARD MUNDOS DIFERENTES (Inicialmente oculto com opacity/hidden) -->
+  <div id="screen-card" class="hidden opacity-0 transition-opacity duration-1000 z-10 w-full max-w-2xl px-4 py-6 flex flex-col items-center">
+    
+    <!-- Player de Áudio Superior -->
+    <header class="w-full max-w-xl z-20 mb-6 flex flex-col items-center">
+      <div class="w-full bg-slate-950/75 backdrop-blur-md rounded-full px-6 py-3 border border-slate-400/40 shadow-2xl flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <button id="playBtn" class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-200 via-white to-slate-400 text-slate-900 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all">
+            <i id="playIcon" class="fas fa-pause text-sm ml-0.5"></i>
+          </button>
+          <div class="hidden sm:block">
+            <p class="text-xs uppercase tracking-widest text-slate-300 font-semibold font-sans">Música de Fundo</p>
+            <p class="text-sm font-serif italic text-slate-100 flex items-center gap-1">
+              <span>Bela e a Fera</span>
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-200 animate-ping"></span>
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 flex-1 max-w-xs">
+          <i id="volumeIcon" class="fas fa-volume-down text-slate-300 text-xs sm:text-sm"></i>
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" class="w-full">
+          <i class="fas fa-volume-up text-slate-300 text-xs sm:text-sm"></i>
+        </div>
+        <span id="volumeValue" class="text-xs font-mono text-slate-300 min-w-[35px] text-right">50%</span>
+      </div>
+    </header>
+
+    <!-- Conteúdo do Card -->
+    <main class="w-full">
+      <div class="glass-card p-7 sm:p-10 relative overflow-hidden shadow-2xl text-center flex flex-col items-center">
+        <div class="mb-3 text-slate-300/70 flex items-center gap-3">
+          <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-slate-300/50"></span>
+          <i class="fas fa-sparkles text-sm text-slate-200"></i>
+          <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-slate-300/50"></span>
+        </div>
+
+        <h1 class="silver-text-glow font-['Cinzel'] font-bold text-2xl sm:text-3xl md:text-4xl tracking-wider uppercase mb-6 border-b border-slate-300/20 pb-4 w-full">
+          MUNDOS DIFERENTES
+        </h1>
+
+        <div class="max-h-[44vh] overflow-y-auto px-3 py-1 custom-scroll text-left">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
+            Vim para Belém para resolver algo totalmente inesperado, e tudo ao meu redor foi se tornando um caos. Jamais imaginei que, desde o primeiro dia em que te vi, começaria a me aproximar de você — até porque somos pessoas tão distintas, com pensamentos e caminhos tão diferentes. No entanto, algo em você chamou a minha atenção e me despertou um cuidado genuíno, pois percebi que você não parecia bem.
+          </p>
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-2">
+            Jamais pensei que, dali em diante, surgiria gradualmente uma linda amizade. Com a sua voz suave e a sua aparência calma, percebi que eu desejava ver o seu bem a todo instante — mesmo quando quase não nos víamos, a não ser no centro espírita. A sua presença sempre foi algo que me trazia um conforto profundo, pois em você eu sempre enxerguei a paz.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
+          <span class="h-[1px] w-16 bg-gradient-to-r from-transparent to-slate-300/40"></span>
+          <span class="text-xs tracking-widest font-serif text-slate-300">✧ ✦ ✧</span>
+          <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-300/40"></span>
+        </div>
+
+        <button id="nextBtn" class="next-card-btn cursor-pointer rounded-full px-8 py-3 flex items-center justify-center gap-3 group">
+          <span class="font-['Cinzel'] font-semibold text-sm sm:text-base tracking-[0.25em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300 group-hover:scale-105 transition-transform duration-300">
+            PRÓXIMA
+          </span>
+          <i class="fas fa-chevron-right text-xs text-slate-300 transform group-hover:translate-x-1.5 transition-transform duration-300"></i>
+        </button>
+      </div>
+    </main>
+
+    <footer class="mt-4 text-center">
+      <p class="silver-text-glow font-['Great_Vibes'] text-2xl sm:text-3xl tracking-wide opacity-90">
+        Páginas de um destino inesperado...
+      </p>
+    </footer>
+  </div>
+
+  <!-- Áudio Único e Global -->
+  <audio id="bgMusic" src="belaeafera.mp3" loop preload="auto"></audio>
+
+  <script>
+    /* --- CANVAS CÓSMICO E ESTRELAS CADENTES --- */
+    const canvas = document.getElementById('cosmicCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.6 + 0.3,
+        alpha: Math.random(),
+        speed: Math.random() * 0.02 + 0.005,
+        growing: Math.random() > 0.5
+      });
+    }
+
+    const shootingStars = [];
+    class ShootingStar {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = -20;
+        this.length = Math.random() * 80 + 40;
+        this.speed = Math.random() * 5 + 3;
+        this.angle = Math.PI / 4 + (Math.random() * 0.1 - 0.05);
+        this.opacity = 1;
+        this.active = true;
+      }
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.opacity -= 0.01;
+        if (this.opacity <= 0 || this.y > height) this.active = false;
+      }
+      draw() {
+        if (!this.active) return;
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        const tailX = this.x - Math.cos(this.angle) * this.length;
+        const tailY = this.y - Math.sin(this.angle) * this.length;
+        const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+        gradient.addColorStop(0, '#ffffff');
+        gradient.addColorStop(0.5, 'rgba(203, 213, 225, 0.5)');
+        gradient.addColorStop(1, 'transparent');
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(tailX, tailY);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    function animateCosmos() {
+      ctx.clearRect(0, 0, width, height);
+      const grad = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, Math.max(width, height));
+      grad.addColorStop(0, '#0d0f17');
+      grad.addColorStop(1, '#030407');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      stars.forEach(s => {
+        if (s.growing) { s.alpha += s.speed; if (s.alpha >= 1) s.growing = false; }
+        else { s.alpha -= s.speed; if (s.alpha <= 0.2) s.growing = true; }
+        ctx.fillStyle = `rgba(226, 232, 240, ${s.alpha})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (Math.random() < 0.03 && shootingStars.length < 3) {
+        shootingStars.push(new ShootingStar());
+      }
+      shootingStars.forEach((ss, index) => {
+        ss.update();
+        ss.draw();
+        if (!ss.active) shootingStars.splice(index, 1);
+      });
+
+      requestAnimationFrame(animateCosmos);
+    }
+    animateCosmos();
+
+    /* --- TRANSIÇÃO FLUIDA SEM RECARREGAR PÁGINA --- */
+    const seal = document.getElementById('seal');
+    const envelope = document.getElementById('envelope');
+    const borderContainer = document.getElementById('borderContainer');
+    const screenEnvelope = document.getElementById('screen-envelope');
+    const screenCard = document.getElementById('screen-card');
+    const bgMusic = document.getElementById('bgMusic');
+
+    seal.addEventListener('click', () => {
+      // 1. Inicia o áudio na primeira interação do clique
+      bgMusic.currentTime = 0;
+      bgMusic.play().catch(err => console.log(err));
+
+      // 2. Animação de zoom no envelope
+      envelope.classList.add('open');
+      borderContainer.classList.add('zoom-effect');
+
+      // 3. Transição instantânea sem congelamentos
+      setTimeout(() => {
+        screenEnvelope.style.display = 'none';
+        screenCard.classList.remove('hidden');
+        setTimeout(() => {
+          screenCard.classList.remove('opacity-0');
+        }, 50);
+      }, 750);
+    });
+
+    /* --- CONTROLES DO PLAYER DE ÁUDIO --- */
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeValue = document.getElementById('volumeValue');
+    const volumeIcon = document.getElementById('volumeIcon');
+
+    playBtn.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        playIcon.className = 'fas fa-pause text-sm ml-0.5';
+      } else {
+        bgMusic.pause();
+        playIcon.className = 'fas fa-play text-sm ml-0.5';
+      }
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      const val = e.target.value;
+      bgMusic.volume = val;
+      volumeValue.textContent = `${Math.round(val * 100)}%`;
+      if (val == 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
+      else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
+      else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
+    });
+  </script>
+</body>
+</html>
