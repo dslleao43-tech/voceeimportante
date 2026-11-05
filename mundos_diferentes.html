@@ -333,6 +333,8 @@
     const volumeIcon = document.getElementById('volumeIcon');
     const musicPulse = document.getElementById('musicPulse');
 
+    bgMusic.volume = 0.5;
+
     function updatePlayUI(isPlaying) {
       if (isPlaying) {
         playIcon.className = 'fas fa-pause text-sm ml-0.5';
@@ -356,22 +358,23 @@
           // Caso o navegador barre o autoplay, ativa ao primeiro toque/clique na tela
           const unlockAudio = () => {
             bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
-            bgMusic.play();
-            updatePlayUI(true);
+            bgMusic.play().then(() => {
+              updatePlayUI(true);
+            });
             window.removeEventListener('click', unlockAudio);
             window.removeEventListener('touchstart', unlockAudio);
           };
           window.addEventListener('click', unlockAudio);
           window.addEventListener('touchstart', unlockAudio);
         });
-
-        // Atualiza periodicamente o tempo no localStorage
-        setInterval(() => {
-          if (!bgMusic.paused) {
-            localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
-          }
-        }, 250);
       }
+
+      // Atualiza periodicamente o tempo no localStorage
+      setInterval(() => {
+        if (!bgMusic.paused) {
+          localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+        }
+      }, 250);
     });
 
     playBtn.addEventListener('click', (e) => {
