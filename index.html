@@ -22,14 +22,14 @@
       position: relative;
     }
 
-    /* Canvas Cósmico com Estrelas e Chuva Incandescente */
+    /* Canvas Cósmico fixo ocupando 100% da tela para as estrelas cadentes cobrirem tudo */
     #cosmicCanvas {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10;
       pointer-events: none;
     }
 
@@ -72,7 +72,7 @@
       animation: softSilverPulse 6s ease-in-out infinite;
     }
 
-    /* Envelope Estilo Pergaminho Envelhecido (Mais Largo e Maior) */
+    /* Envelope Estilo Pergaminho Envelhecido */
     .envelope-wrapper {
       position: relative;
       width: 480px;
@@ -127,7 +127,6 @@
       z-index: 4;
     }
 
-    /* Mensagem com Letra Estilo Clássica Antiga, Bem Legível e Branca */
     .envelope-message {
       position: absolute;
       top: 40px;
@@ -147,7 +146,6 @@
       pointer-events: none;
     }
 
-    /* Brasão em Cera Sofisticado */
     .wax-seal-shield {
       position: absolute;
       top: 155px;
@@ -168,7 +166,6 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.85), inset 0 3px 6px rgba(254, 243, 199, 0.4);
     }
 
-    /* Texto 'ABRIR' em Branco Puro Brilhante com Sombra */
     .wax-seal-shield span {
       font-family: 'Georgia', serif;
       font-size: 0.88rem;
@@ -196,7 +193,6 @@
       transition: opacity 0.3s ease;
     }
 
-    /* Efeito de Zoom Cósmico na Transição */
     .silver-border-glow.zoom-effect {
       animation: zoomInCosmic 0.9s forwards cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -236,11 +232,10 @@
   <audio id="bgMusic" src="belaeafera.mp3" preload="auto"></audio>
 
   <script>
-    /* Fundo Cósmico com Estrelas de Brilho Dinâmico e Estrelas Incandescentes */
     const canvas = document.getElementById('cosmicCanvas');
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
 
     window.addEventListener('resize', () => {
       width = canvas.width = window.innerWidth;
@@ -284,10 +279,9 @@
         const tailX = this.x - Math.cos(this.angle) * this.length;
         const tailY = this.y - Math.sin(this.angle) * this.length;
         
-        // Gradiente incandescente e brilhante na estrela cadente
         const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
         gradient.addColorStop(0, '#ffffff');
-        gradient.addColorStop(0.3, '#fde047'); // Toque quente/incandescente
+        gradient.addColorStop(0.3, '#fde047');
         gradient.addColorStop(0.7, 'rgba(203, 213, 225, 0.4)');
         gradient.addColorStop(1, 'transparent');
         
@@ -303,11 +297,6 @@
 
     function animateCosmos() {
       ctx.clearRect(0, 0, width, height);
-      const grad = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, Math.max(width, height));
-      grad.addColorStop(0, '#0d0f17');
-      grad.addColorStop(1, '#030407');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, width, height);
 
       stars.forEach(s => {
         if (s.growing) {
@@ -323,7 +312,6 @@
         ctx.fill();
       });
 
-      // Frequência de estrelas cadentes passando pelo cenário
       if (Math.random() < 0.04 && shootingStars.length < 4) {
         shootingStars.push(new ShootingStar());
       }
@@ -337,7 +325,6 @@
     }
     animateCosmos();
 
-    /* Ação ao Clicar no Brasão: Toca a Música, Abre o Envelope e Avança */
     const envelope = document.getElementById('envelope');
     const seal = document.getElementById('seal');
     const borderContainer = document.getElementById('borderContainer');
@@ -346,12 +333,10 @@
     seal.addEventListener('click', () => {
       bgMusic.currentTime = 0;
       
-      // Toca a música e inicia a gravação do progresso no localStorage
       bgMusic.play().then(() => {
         localStorage.setItem('musicPlaying', 'true');
         localStorage.setItem('musicCurrentTime', '0');
 
-        // Atualiza o tempo atual da música continuamente a cada 250ms
         setInterval(() => {
           if (!bgMusic.paused) {
             localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
@@ -365,7 +350,6 @@
       borderContainer.classList.add('zoom-effect');
 
       setTimeout(() => {
-        // Garante que o tempo final exato seja salvo antes de sair da página
         localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
         window.location.href = "mundos_diferentes.html";
       }, 750);

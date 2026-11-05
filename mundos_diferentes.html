@@ -158,7 +158,7 @@
 
   <div id="app-container" class="z-10 w-full max-w-2xl px-2 sm:px-4 py-4 flex flex-col items-center">
     
-    <!-- Player de Áudio Superior (Toca continuamente entre transições) -->
+    <!-- Player de Áudio Superior -->
     <header class="w-full max-w-xl z-20 mb-6 flex flex-col items-center">
       <div class="w-full bg-slate-950/85 backdrop-blur-md rounded-full px-5 sm:px-6 py-3 border border-slate-400/40 shadow-2xl flex items-center justify-between gap-3 sm:gap-4">
         
@@ -254,7 +254,7 @@
             Vim para Belém para resolver algo totalmente inesperado, e tudo ao meu redor foi se tornando um caos. Jamais imaginei que, desde o primeiro dia em que te vi, começaria a me aproximar de você — até porque somos pessoas tão distintas, com pensamentos e caminhos tão diferentes. No entanto, algo em você chamou a minha atenção e me despertou um cuidado genuíno, pois percebi que você não parecia bem.
           </p>
           <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
-            Jamais pensei que, dali em diante, surgiria gradualmente uma linda amizade. Com a sua voz suave e a sua aparência calma, percebi que eu desejava ver o seu bem a todo instante — mesmo quando quase não nos víamos, a não ser no centro espírita. A sua presença sempre foi algo que me trazia um conforto profundo, pois em você eu sempre enxerguei a paz.
+            Jamais pensei que, dali em diante, surgiria gradualmente uma linda amizade. Com a sua voz suave e a sua aparência calma, percebi que eu desejava ver o seu bem a todo instante — mesmo quando quase não nos víamos, a não ser no centro espírita. A sua presença sempre foi algo que me traria um conforto profundo, pois em você eu sempre enxerguei a paz.
           </p>
           <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-2">
             Aos meus longos anos de vida, já passei por muitas provações nada fáceis, porém com aprendizado para que, de alguma forma, possa extrair coisas boas. Apesar de qualquer coisa, me permito não ser vítima da vida. Nós somos espíritas kardecistas e sabemos que tudo é passageiro e que devemos sempre acreditar em dias melhores. Mas aí veio você e me deu um nó na cabeça! Eu, uma mulher super bem resolvida que gosta de mulheres, jamais me imaginei envolvida com um homem hétero. Somos de universos bem diferentes, mas a sua companhia, seu carinho, seu afeto e seu sorriso me fazem tão bem que não tenho como negar: o que sinto por você é absolutamente um amor genuíno.
@@ -294,7 +294,6 @@
         contentArea.classList.remove('fade-out');
         contentArea.classList.add('fade-in');
 
-        // Atualização dos Botões
         if (index === 0) {
           prevBtn.classList.add('disabled-btn');
         } else {
@@ -325,7 +324,7 @@
 
     renderPage(currentPage);
 
-    /* --- CONTROLES DO PLAYER DE ÁUDIO --- */
+    /* --- CONTROLES E PERSISTÊNCIA DA MÚSICA ENTRE PÁGINAS --- */
     const bgMusic = document.getElementById('bgMusic');
     const playBtn = document.getElementById('playBtn');
     const playIcon = document.getElementById('playIcon');
@@ -344,13 +343,48 @@
       }
     }
 
+    // Inicialização automática do áudio recuperando o estado da página anterior
+    window.addEventListener('DOMContentLoaded', () => {
+      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
+      const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
+
+      if (isPlaying) {
+        bgMusic.currentTime = savedTime;
+        bgMusic.play().then(() => {
+          updatePlayUI(true);
+        }).catch(() => {
+          // Caso o navegador barre o autoplay, ativa ao primeiro toque/clique na tela
+          const unlockAudio = () => {
+            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
+            bgMusic.play();
+            updatePlayUI(true);
+            window.removeEventListener('click', unlockAudio);
+            window.removeEventListener('touchstart', unlockAudio);
+          };
+          window.addEventListener('click', unlockAudio);
+          window.addEventListener('touchstart', unlockAudio);
+        });
+
+        // Atualiza periodicamente o tempo no localStorage
+        setInterval(() => {
+          if (!bgMusic.paused) {
+            localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+          }
+        }, 250);
+      }
+    });
+
     playBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (bgMusic.paused) {
-        bgMusic.play().then(() => updatePlayUI(true)).catch(err => console.log(err));
+        bgMusic.play().then(() => {
+          updatePlayUI(true);
+          localStorage.setItem('musicPlaying', 'true');
+        }).catch(err => console.log(err));
       } else {
         bgMusic.pause();
         updatePlayUI(false);
+        localStorage.setItem('musicPlaying', 'false');
       }
     });
 
@@ -366,6 +400,10 @@
       } else {
         volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
       }
+    });
+
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
     });
 
     /* --- CANVAS CÓSMICO COM ESTRELAS CADENTES --- */
