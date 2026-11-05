@@ -32,6 +32,7 @@
       position: relative;
       user-select: none;
       color: #e2e8f0;
+      padding: 2rem 1rem;
     }
 
     /* Canvas Cósmico Fundo */
@@ -49,7 +50,7 @@
     /* Borda Prateada Animada */
     .silver-running-border {
       position: relative;
-      border-radius: 24px;
+      border-radius: 26px;
       padding: 2px;
       overflow: hidden;
     }
@@ -96,11 +97,11 @@
     .glass-card {
       position: relative;
       z-index: 2;
-      background: rgba(10, 15, 30, 0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(10, 15, 30, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       color: #f8fafc;
-      border-radius: 22px;
+      border-radius: 24px;
       width: 100%;
     }
 
@@ -122,6 +123,19 @@
 
     .chest-pulse {
       animation: chestPulse 2.5s ease-in-out infinite;
+    }
+
+    .nav-card-btn {
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(148,163,184,0.06) 50%, rgba(15,23,42,0.3) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 12px rgba(226, 232, 240, 0.15);
+      transition: all 0.4s ease;
+      backdrop-filter: blur(8px);
+      text-decoration: none;
+    }
+    .nav-card-btn:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
     }
 
     input[type=range] { -webkit-appearance: none; background: transparent; }
@@ -150,7 +164,7 @@
   <!-- Canvas para Explosão de Partículas ao Abrir o Baú -->
   <canvas id="burstCanvas"></canvas>
 
-  <div id="app-container" class="z-10 w-full max-w-2xl px-4 py-6 flex flex-col items-center">
+  <div id="app-container" class="z-10 w-full max-w-2xl px-4 py-4 flex flex-col items-center">
     
     <!-- Player de Áudio Superior (Toca continuamente) -->
     <header class="w-full max-w-xl z-20 mb-6 flex flex-col items-center">
@@ -179,7 +193,7 @@
     <!-- Container da Borda Prateada Animada -->
     <div class="silver-running-border w-full shadow-2xl">
       <!-- Conteúdo do Card Interior -->
-      <main class="glass-card p-6 sm:p-10 text-center flex flex-col items-center">
+      <main class="glass-card p-7 sm:p-10 text-center flex flex-col items-center">
         <div class="mb-3 text-slate-300/70 flex items-center gap-3">
           <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-slate-300/50"></span>
           <i class="fas fa-sparkles text-sm text-yellow-300 animate-pulse"></i>
@@ -253,7 +267,7 @@
         </div>
 
         <!-- MENSAGEM / REFLEXÃO -->
-        <div id="reflectionContent" class="w-full text-left fade-in">
+        <div id="reflectionContent" class="w-full text-left space-y-4">
           <h3 class="gold-text-glow font-['Cinzel'] font-semibold text-lg sm:text-xl text-center mb-5 tracking-wide">
             A Reflexão: A Estrela que Nunca Deixa de Brilhar
           </h3>
@@ -271,10 +285,33 @@
           </div>
         </div>
 
+        <div class="mt-8 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
+          <span class="h-[1px] w-16 bg-gradient-to-r from-transparent to-slate-300/40"></span>
+          <span class="text-xs tracking-widest font-serif text-slate-300">✧ ✦ ✧</span>
+          <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-300/40"></span>
+        </div>
+
+        <!-- Botões de Navegação -->
+        <div class="flex items-center justify-between w-full px-2 gap-4">
+          <a href="o_encontro.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
+            <i class="fas fa-chevron-left text-xs text-slate-300 transform group-hover:-translate-x-1 transition-transform duration-300"></i>
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
+              ANTERIOR
+            </span>
+          </a>
+
+          <a href="voce_é_importante.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
+              PRÓXIMA
+            </span>
+            <i class="fas fa-chevron-right text-xs text-slate-300 transform group-hover:translate-x-1 transition-transform duration-300"></i>
+          </a>
+        </div>
+
       </main>
     </div>
 
-    <footer class="mt-4 text-center">
+    <footer class="mt-5 text-center">
       <p class="silver-text-glow font-['Great_Vibes'] text-2xl sm:text-3xl tracking-wide opacity-90">
         Você é uma estrela radiante...
       </p>
@@ -465,6 +502,8 @@
     const volumeIcon = document.getElementById('volumeIcon');
     const musicPulse = document.getElementById('musicPulse');
 
+    bgMusic.volume = 0.5;
+
     function updatePlayUI(isPlaying) {
       if (isPlaying) {
         playIcon.className = 'fas fa-pause text-sm ml-0.5';
@@ -475,7 +514,6 @@
       }
     }
 
-    // Inicialização automática recuperando o estado da música da página anterior
     window.addEventListener('DOMContentLoaded', () => {
       const isPlaying = localStorage.getItem('musicPlaying') === 'true';
       const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
@@ -497,7 +535,6 @@
           window.addEventListener('touchstart', unlockAudio);
         });
 
-        // Salva periodicamente o tempo no localStorage
         setInterval(() => {
           if (!bgMusic.paused) {
             localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());

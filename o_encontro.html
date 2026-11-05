@@ -32,6 +32,7 @@
       position: relative;
       user-select: none;
       color: #e2e8f0;
+      padding: 2rem 1rem;
     }
 
     /* Canvas Cósmico Fundo */
@@ -48,9 +49,10 @@
     /* --- BORDA PRATEADA CORRENDO NO PERÍMETRO EXTERNO --- */
     .silver-running-border {
       position: relative;
-      border-radius: 24px;
+      border-radius: 26px;
       padding: 2px;
       overflow: hidden;
+      box-shadow: 0 0 25px rgba(226, 232, 240, 0.15);
     }
 
     .silver-running-border::before {
@@ -88,19 +90,12 @@
     .glass-card {
       position: relative;
       z-index: 2;
-      background: rgba(10, 15, 30, 0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(10, 15, 30, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       color: #f8fafc;
-      border-radius: 22px;
+      border-radius: 24px;
       width: 100%;
-    }
-
-    .custom-scroll::-webkit-scrollbar { width: 5px; }
-    .custom-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.2); border-radius: 10px; }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(203,213,225,0.7) 50%, rgba(148,163,184,0.4) 100%);
-      border-radius: 10px;
     }
 
     .nav-card-btn {
@@ -109,6 +104,7 @@
       box-shadow: 0 0 12px rgba(226, 232, 240, 0.15);
       transition: all 0.4s ease;
       backdrop-filter: blur(8px);
+      text-decoration: none;
     }
     .nav-card-btn:hover {
       transform: scale(1.05) translateY(-2px);
@@ -127,16 +123,10 @@
       cursor: pointer; -webkit-appearance: none; margin-top: -6px;
     }
 
-    .fade-in { animation: fadeIn 0.5s ease-in-out forwards; }
-    .fade-out { animation: fadeOut 0.4s ease-in-out forwards; }
-
+    .fade-in { animation: fadeIn 0.45s ease-in-out forwards; }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeOut {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(-10px); }
     }
   </style>
 </head>
@@ -145,7 +135,7 @@
   <!-- Canvas Cósmico de Fundo com Estrelas Cadentes -->
   <canvas id="cosmicCanvas"></canvas>
 
-  <div id="app-container" class="z-10 w-full max-w-2xl px-4 py-6 flex flex-col items-center">
+  <div id="app-container" class="z-10 w-full max-w-2xl px-4 py-4 flex flex-col items-center">
     
     <!-- Player de Áudio Superior (Toca continuamente) -->
     <header class="w-full max-w-xl z-20 mb-6 flex flex-col items-center">
@@ -173,49 +163,57 @@
 
     <!-- Container da Borda Prateada Animada -->
     <div class="silver-running-border w-full shadow-2xl">
-      <!-- Conteúdo do Card Interior -->
-      <main class="glass-card p-7 sm:p-10 text-center flex flex-col items-center">
+      <!-- Conteúdo do Card Interior (Sem limite de altura, leitura contínua e fluida) -->
+      <main class="glass-card p-7 sm:p-10 text-center flex flex-col items-center fade-in">
         <div class="mb-3 text-slate-300/70 flex items-center gap-3">
           <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-slate-300/50"></span>
           <i class="fas fa-sparkles text-sm text-slate-200"></i>
           <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-slate-300/50"></span>
         </div>
 
-        <h1 id="pageTitle" class="silver-text-glow font-['Cinzel'] font-bold text-2xl sm:text-3xl md:text-4xl tracking-wider uppercase mb-6 border-b border-slate-300/20 pb-4 w-full">
-          A BELA E A FERA
+        <h1 class="silver-text-glow font-['Cinzel'] font-bold text-2xl sm:text-3xl md:text-4xl tracking-wider uppercase mb-6 border-b border-slate-300/20 pb-4 w-full">
+          O ENCONTRO
         </h1>
 
-        <!-- Área de Texto Dinâmico com Fade e Scroll -->
-        <div id="contentArea" class="w-full max-h-[44vh] overflow-y-auto px-3 py-1 custom-scroll text-left fade-in">
-          <!-- O conteúdo será injetado pelo JavaScript -->
+        <!-- Área de Conteúdo Contínuo -->
+        <div class="w-full px-2 py-1 text-left space-y-5">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
+            Sabe, a nossa história tem muito daquele conto da Bela e a Fera. Nós viemos de mundos completamente diferentes, de caminhos que pareciam não se cruzar. Mas quando a gente se encontrou, a aparência e qualquer tipo de preconceito simplesmente sumiram — eles nunca fizeram parte da nossa história. O que importou de verdade foi a alma.
+          </p>
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
+            A Bela e a Fera nos ensinam que o castelo não é só um lugar de pedra, mas sim o mundo que a gente constrói por dentro. Lá fora, o mundo pode fazer barulho, julgar ou não entender nada sobre nós. Mas quando estamos juntos, criamos o nosso próprio universo protegido. O mundo externo não tem poder para atrapalhar o que é verdadeiro no nosso mundo interno; a paz que sentimos um no outro é blindada por um afeto sincero.
+          </p>
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
+            A gente viveu e continua vivendo momentos mágicos, com aquele frio na barriga gostoso, parecendo dois adolescentes descobrindo o amor, mas com a maturidade e a certeza de quem já sabe o que quer da vida. Cada dia que passa é um presente: a gente se conhece mais, se entende mais, aceita as diferenças do outro e vê a vontade de estar perto, de trocar um abraço, um carinho e um sorriso crescer a cada instante. Estar com você é meu refúgio e minha paz, e o que sinto por você é de uma verdade tão bonita que não tem como disfarçar, através dos olhos que brilham como estrelas no céu.
+          </p>
         </div>
 
-        <div class="mt-6 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
+        <div class="mt-8 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
           <span class="h-[1px] w-16 bg-gradient-to-r from-transparent to-slate-300/40"></span>
           <span class="text-xs tracking-widest font-serif text-slate-300">✧ ✦ ✧</span>
           <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-300/40"></span>
         </div>
 
-        <!-- Botões de Navegação -->
+        <!-- Botões de Navegação Direcionados para os Arquivos HTML Seguintes -->
         <div class="flex items-center justify-between w-full px-2 gap-4">
-          <button id="prevBtn" class="nav-card-btn cursor-pointer rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group opacity-50 pointer-events-none">
+          <a href="mundos_diferentes.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
             <i class="fas fa-chevron-left text-xs text-slate-300 transform group-hover:-translate-x-1 transition-transform duration-300"></i>
             <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
               ANTERIOR
             </span>
-          </button>
+          </a>
 
-          <button id="nextBtn" class="nav-card-btn cursor-pointer rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
+          <a href="voce_brilha.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
             <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
               PRÓXIMA
             </span>
             <i class="fas fa-chevron-right text-xs text-slate-300 transform group-hover:translate-x-1 transition-transform duration-300"></i>
-          </button>
+          </a>
         </div>
       </main>
     </div>
 
-    <footer class="mt-4 text-center">
+    <footer class="mt-5 text-center">
       <p class="silver-text-glow font-['Great_Vibes'] text-2xl sm:text-3xl tracking-wide opacity-90">
         Páginas de um destino inesperado...
       </p>
@@ -226,86 +224,82 @@
   <audio id="bgMusic" src="belaeafera.mp3" loop preload="auto"></audio>
 
   <script>
-    /* --- ESTRUTURA DE PÁGINAS --- */
-    const pages = [
-      {
-        title: "A BELA E A FERA",
-        content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
-            Vim para Belém para resolver algo totalmente inesperado, e tudo ao meu redor foi se tornando um caos. Jamais imaginei que, desde o primeiro dia em que te vi, começaria a me aproximar de você — até porque somos pessoas tão distintas, com pensamentos e caminhos tão diferentes. No entanto, algo em você chamou a minha atenção e me despertou um cuidado genuíno, pois percebi que você não parecia bem.
-          </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
-            Jamais pensei que, dali em diante, surgiria gradualmente uma linda amizade. Com a sua voz suave e a sua aparência calma, percebi que eu desejava ver o seu bem a todo instante — mesmo quando quase não nos víamos, a não ser no centro espírita. A sua presença sempre foi algo que me traria um conforto profundo, pois em você eu sempre enxerguei a paz.
-          </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-2">
-            Aos meus longos anos de vida, já passei por muitas provações nada fáceis, porém com aprendizado para que, de alguma forma, possa extrair coisas boas. Apesar de qualquer coisa, me permito não ser vítima da vida. Nós somos espíritas kardecistas e sabemos que tudo é passageiro e que devemos sempre acreditar em dias melhores. Mas aí veio você e me deu um nó na cabeça! Eu, uma mulher super bem resolvida que gosta de mulheres, jamais me imaginei envolvida com um homem hétero. Somos de universos bem diferentes, mas a sua companhia, seu carinho, seu afeto e seu sorriso me fazem tão bem que não tenho como negar: o que sinto por você é absolutamente um amor genuíno.
-          </p>
-        `
-      },
-      {
-        title: "O ENCONTRO",
-        content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
-            Sabe, a nossa história tem muito daquele conto da Bela e a Fera. Nós viemos de mundos completamente diferentes, de caminhos que pareciam não se cruzar. Mas quando a gente se encontrou, a aparência e qualquer tipo de preconceito simplesmente sumiram — eles nunca fizeram parte da nossa história. O que importou de verdade foi a alma.
-          </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
-            A Bela e a Fera nos ensinam que o castelo não é só um lugar de pedra, mas sim o mundo que a gente constrói por dentro. Lá fora, o mundo pode fazer barulho, julgar ou não entender nada sobre nós. Mas quando estamos juntos, criamos o nosso próprio universo protegido. O mundo externo não tem poder para atrapalhar o que é verdadeiro no nosso mundo interno; a paz que sentimos um no outro é blindada por um afeto sincero.
-          </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-2">
-            A gente viveu e continua vivendo momentos mágicos, com aquele frio na barriga gostoso, parecendo dois adolescentes descobrindo o amor, mas com a maturidade e a certeza de quem já sabe o que quer da vida. Cada dia que passa é um presente: a gente se conhece mais, se entende mais, aceita as diferenças do outro e vê a vontade de estar perto, de trocar um abraço, um carinho e um sorriso crescer a cada instante. Estar com você é meu refúgio e minha paz, e o que sinto por você é de uma verdade tão bonita que não tem como disfarçar, através dos olhos que brilham como estrelas no céu.
-          </p>
-        `
+    /* --- CONTROLES DO PLAYER DE ÁUDIO E PERSISTÊNCIA --- */
+    const bgMusic = document.getElementById('bgMusic');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeValue = document.getElementById('volumeValue');
+    const volumeIcon = document.getElementById('volumeIcon');
+    const musicPulse = document.getElementById('musicPulse');
+
+    bgMusic.volume = 0.5;
+
+    function updatePlayUI(isPlaying) {
+      if (isPlaying) {
+        playIcon.className = 'fas fa-pause text-sm ml-0.5';
+        musicPulse.classList.remove('opacity-0');
+      } else {
+        playIcon.className = 'fas fa-play text-sm ml-0.5';
+        musicPulse.classList.add('opacity-0');
       }
-    ];
-
-    let currentPage = 0;
-
-    const pageTitle = document.getElementById('pageTitle');
-    const contentArea = document.getElementById('contentArea');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    function renderPage(index) {
-      contentArea.classList.remove('fade-in');
-      contentArea.classList.add('fade-out');
-
-      setTimeout(() => {
-        pageTitle.textContent = pages[index].title;
-        contentArea.innerHTML = pages[index].content;
-        contentArea.scrollTop = 0;
-
-        contentArea.classList.remove('fade-out');
-        contentArea.classList.add('fade-in');
-
-        if (index === 0) {
-          prevBtn.classList.add('opacity-50', 'pointer-events-none');
-        } else {
-          prevBtn.classList.remove('opacity-50', 'pointer-events-none');
-        }
-
-        if (index === pages.length - 1) {
-          nextBtn.classList.add('opacity-50', 'pointer-events-none');
-        } else {
-          nextBtn.classList.remove('opacity-50', 'pointer-events-none');
-        }
-      }, 400);
     }
 
-    prevBtn.addEventListener('click', () => {
-      if (currentPage > 0) {
-        currentPage--;
-        renderPage(currentPage);
+    window.addEventListener('DOMContentLoaded', () => {
+      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
+      const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
+
+      if (isPlaying) {
+        bgMusic.currentTime = savedTime;
+        bgMusic.play().then(() => {
+          updatePlayUI(true);
+        }).catch(() => {
+          const unlockAudio = () => {
+            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
+            bgMusic.play().then(() => {
+              updatePlayUI(true);
+            });
+            window.removeEventListener('click', unlockAudio);
+            window.removeEventListener('touchstart', unlockAudio);
+          };
+          window.addEventListener('click', unlockAudio);
+          window.addEventListener('touchstart', unlockAudio);
+        });
+      }
+
+      setInterval(() => {
+        if (!bgMusic.paused) {
+          localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+        }
+      }, 250);
+    });
+
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (bgMusic.paused) {
+        bgMusic.play().then(() => {
+          updatePlayUI(true);
+          localStorage.setItem('musicPlaying', 'true');
+        }).catch(err => console.log("Erro ao tocar áudio:", err));
+      } else {
+        bgMusic.pause();
+        updatePlayUI(false);
+        localStorage.setItem('musicPlaying', 'false');
       }
     });
 
-    nextBtn.addEventListener('click', () => {
-      if (currentPage < pages.length - 1) {
-        currentPage++;
-        renderPage(currentPage);
-      }
+    volumeSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      bgMusic.volume = val;
+      volumeValue.textContent = `${Math.round(val * 100)}%`;
+      if (val === 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
+      else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
+      else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
     });
 
-    renderPage(currentPage);
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+    });
 
     /* --- CANVAS CÓSMICO --- */
     const canvas = document.getElementById('cosmicCanvas');
@@ -397,83 +391,6 @@
       requestAnimationFrame(animateCosmos);
     }
     animateCosmos();
-
-    /* --- CONTROLES DO PLAYER DE ÁUDIO E PERSISTÊNCIA --- */
-    const bgMusic = document.getElementById('bgMusic');
-    const playBtn = document.getElementById('playBtn');
-    const playIcon = document.getElementById('playIcon');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const volumeValue = document.getElementById('volumeValue');
-    const volumeIcon = document.getElementById('volumeIcon');
-    const musicPulse = document.getElementById('musicPulse');
-
-    function updatePlayUI(isPlaying) {
-      if (isPlaying) {
-        playIcon.className = 'fas fa-pause text-sm ml-0.5';
-        musicPulse.classList.remove('opacity-0');
-      } else {
-        playIcon.className = 'fas fa-play text-sm ml-0.5';
-        musicPulse.classList.add('opacity-0');
-      }
-    }
-
-    // Inicialização automática e recuperação do tempo da música ao carregar a página
-    window.addEventListener('DOMContentLoaded', () => {
-      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
-      const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
-
-      if (isPlaying) {
-        bgMusic.currentTime = savedTime;
-        bgMusic.play().then(() => {
-          updatePlayUI(true);
-        }).catch(() => {
-          // Fallback se o navegador bloquear autoplay: toca no primeiro clique em qualquer lugar da tela
-          const unlockAudio = () => {
-            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
-            bgMusic.play().then(() => {
-              updatePlayUI(true);
-            });
-            window.removeEventListener('click', unlockAudio);
-            window.removeEventListener('touchstart', unlockAudio);
-          };
-          window.addEventListener('click', unlockAudio);
-          window.addEventListener('touchstart', unlockAudio);
-        });
-
-        // Salva o progresso do áudio continuamente a cada 250ms
-        setInterval(() => {
-          if (!bgMusic.paused) {
-            localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
-          }
-        }, 250);
-      }
-    });
-
-    playBtn.addEventListener('click', () => {
-      if (bgMusic.paused) {
-        bgMusic.play().then(() => {
-          updatePlayUI(true);
-          localStorage.setItem('musicPlaying', 'true');
-        }).catch(err => console.log("Erro ao tocar áudio:", err));
-      } else {
-        bgMusic.pause();
-        updatePlayUI(false);
-        localStorage.setItem('musicPlaying', 'false');
-      }
-    });
-
-    volumeSlider.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      bgMusic.volume = val;
-      volumeValue.textContent = `${Math.round(val * 100)}%`;
-      if (val === 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
-      else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
-      else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
-    });
-
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
-    });
   </script>
 </body>
 </html>

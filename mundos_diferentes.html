@@ -32,7 +32,7 @@
       position: relative;
       user-select: none;
       color: #e2e8f0;
-      padding: 1.5rem 1rem;
+      padding: 2rem 1rem;
     }
 
     /* Canvas Cósmico de Fundo */
@@ -79,7 +79,7 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Card com Fundo Escuro Preservado */
+    /* Card com Fundo Escuro e Leitura Fluida */
     .glass-card {
       position: relative;
       z-index: 2;
@@ -96,14 +96,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 20px rgba(226, 232, 240, 0.4);
-    }
-
-    /* Scrollbar Personalizada */
-    .custom-scroll::-webkit-scrollbar { width: 5px; }
-    .custom-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.2); border-radius: 10px; }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(203,213,225,0.6) 50%, rgba(148,163,184,0.3) 100%);
-      border-radius: 10px;
     }
 
     /* Botões de Navegação */
@@ -187,7 +179,7 @@
 
     <!-- Moldura da Borda Prateada Animada Externa -->
     <div class="silver-running-border w-full">
-      <!-- Card Interior -->
+      <!-- Card Interior Sem Restrição de Altura (Leitura Fluida) -->
       <main class="glass-card p-6 sm:p-10 text-center flex flex-col items-center">
         
         <!-- Detalhe Ornamental Superior -->
@@ -202,13 +194,13 @@
           MUNDOS DIFERENTES
         </h1>
 
-        <!-- Área de Conteúdo Dinâmico -->
-        <div id="contentArea" class="w-full max-h-[46vh] overflow-y-auto px-2 sm:px-4 py-1 custom-scroll text-left fade-in">
+        <!-- Área de Conteúdo Dinâmico (Sem Rolagem Interna, Altura Livre) -->
+        <div id="contentArea" class="w-full px-2 sm:px-4 py-1 text-left fade-in space-y-5">
           <!-- O texto é inserido via JavaScript -->
         </div>
 
         <!-- Divisor Ornamental dos Botões -->
-        <div class="mt-6 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
+        <div class="mt-8 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
           <span class="h-[1px] w-16 bg-gradient-to-r from-transparent to-slate-300/40"></span>
           <span class="text-xs tracking-widest font-serif text-slate-300">✧ ✦ ✧</span>
           <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-300/40"></span>
@@ -250,13 +242,13 @@
       {
         title: "MUNDOS DIFERENTES",
         content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             Vim para Belém para resolver algo totalmente inesperado, e tudo ao meu redor foi se tornando um caos. Jamais imaginei que, desde o primeiro dia em que te vi, começaria a me aproximar de você — até porque somos pessoas tão distintas, com pensamentos e caminhos tão diferentes. No entanto, algo em você chamou a minha atenção e me despertou um cuidado genuíno, pois percebi que você não parecia bem.
           </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             Jamais pensei que, dali em diante, surgiria gradualmente uma linda amizade. Com a sua voz suave e a sua aparência calma, percebi que eu desejava ver o seu bem a todo instante — mesmo quando quase não nos víamos, a não ser no centro espírita. A sua presença sempre foi algo que me traria um conforto profundo, pois em você eu sempre enxerguei a paz.
           </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-2">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             Aos meus longos anos de vida, já passei por muitas provações nada fáceis, porém com aprendizado para que, de alguma forma, possa extrair coisas boas. Apesar de qualquer coisa, me permito não ser vítima da vida. Nós somos espíritas kardecistas e sabemos que tudo é passageiro e que devemos sempre acreditar em dias melhores. Mas aí veio você e me deu um nó na cabeça! Eu, uma mulher super bem resolvida que gosta de mulheres, jamais me imaginei envolvida com um homem hétero. Somos de universos bem diferentes, mas a sua companhia, seu carinho, seu afeto e seu sorriso me fazem tão bem que não tenho como negar: o que sinto por você é absolutamente um amor genuíno.
           </p>
         `
@@ -264,10 +256,10 @@
       {
         title: "CONTINUAÇÃO DA JORNADA",
         content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-5">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             Mesmo com todas as surpresas que o tempo nos reserva, compreendi que alguns encontros acontecem com um propósito muito maior do que conseguimos planejar.
           </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic mb-2">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             A cada conversa e a cada gesto simples, continuo descobrindo que o afeto verdadeiro transcende rótulos, distâncias e expectativas. O futuro pertence aos dias que ainda vamos construir.
           </p>
         `
@@ -289,7 +281,7 @@
       setTimeout(() => {
         pageTitle.textContent = pages[index].title;
         contentArea.innerHTML = pages[index].content;
-        contentArea.scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
         contentArea.classList.remove('fade-out');
         contentArea.classList.add('fade-in');
@@ -345,7 +337,6 @@
       }
     }
 
-    // Inicialização automática do áudio recuperando o estado da página anterior
     window.addEventListener('DOMContentLoaded', () => {
       const isPlaying = localStorage.getItem('musicPlaying') === 'true';
       const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
@@ -355,7 +346,6 @@
         bgMusic.play().then(() => {
           updatePlayUI(true);
         }).catch(() => {
-          // Caso o navegador barre o autoplay, ativa ao primeiro toque/clique na tela
           const unlockAudio = () => {
             bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
             bgMusic.play().then(() => {
@@ -369,7 +359,6 @@
         });
       }
 
-      // Atualiza periodicamente o tempo no localStorage
       setInterval(() => {
         if (!bgMusic.paused) {
           localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
