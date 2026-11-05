@@ -163,7 +163,7 @@
             <p class="text-xs uppercase tracking-widest text-slate-300 font-semibold font-sans">Música de Fundo</p>
             <p class="text-sm font-serif italic text-slate-100 flex items-center gap-1">
               <span>Bela e a Fera</span>
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-200 animate-ping"></span>
+              <span id="musicPulse" class="inline-block w-1.5 h-1.5 rounded-full bg-slate-200 animate-ping opacity-0"></span>
             </p>
           </div>
         </div>
@@ -193,7 +193,7 @@
         <!-- ÁREA DO BAÚ MÁGICO / ESTRELA -->
         <div class="relative w-full flex flex-col items-center justify-center my-4 min-h-[190px]">
           
-          <!-- ESTRELA FLUTUANTE (INICIALMENTE OCULTA OU DENTRO DO BAÚ) -->
+          <!-- ESTRELA FLUTUANTE -->
           <div id="starContainer" class="hidden flex-col items-center z-10">
             <svg class="w-24 h-24 sm:w-28 sm:h-28 floating-star mb-3" viewBox="0 0 100 100" fill="none">
               <path d="M50 0 L58 35 L93 25 L68 50 L93 75 L58 65 L50 100 L42 65 L7 75 L32 50 L7 25 L42 35 Z" fill="url(#starGrad)" />
@@ -217,31 +217,24 @@
             
             <!-- SVG DO BAÚ FECHADO -->
             <svg id="chestClosed" class="w-32 h-28 sm:w-36 sm:h-32" viewBox="0 0 120 100" fill="none">
-              <!-- Tampa do Baú -->
               <path d="M10 40 C10 15, 110 15, 110 40 Z" fill="#854d0e" stroke="#fef08a" stroke-width="2"/>
               <path d="M10 40 L110 40" stroke="#fef08a" stroke-width="3"/>
               <path d="M30 18 C30 18, 60 12, 90 18" stroke="#ca8a04" stroke-width="2" fill="none"/>
-              <!-- Corpo do Baú -->
               <rect x="12" y="40" width="96" height="45" rx="4" fill="#713f12" stroke="#fef08a" stroke-width="2"/>
               <rect x="24" y="40" width="10" height="45" fill="#a16207" opacity="0.6"/>
               <rect x="86" y="40" width="10" height="45" fill="#a16207" opacity="0.6"/>
-              <!-- Fecho / Fechadura Dourada -->
               <rect x="52" y="36" width="16" height="20" rx="3" fill="#facc15" stroke="#ffffff" stroke-width="1.5"/>
               <circle cx="60" cy="44" r="3" fill="#451a03"/>
             </svg>
 
-            <!-- SVG DO BAÚ ABERTO (INICIALMENTE OCULTO) -->
+            <!-- SVG DO BAÚ ABERTO -->
             <svg id="chestOpen" class="w-32 h-28 sm:w-36 sm:h-32 hidden" viewBox="0 0 120 100" fill="none">
-              <!-- Tampa Aberta -->
               <path d="M10 32 C10 10, 110 10, 110 32 Z" fill="#713f12" stroke="#fef08a" stroke-width="2" transform="rotate(-25 60 30)"/>
-              <!-- Brilho Interno do Baú -->
               <ellipse cx="60" cy="45" rx="40" ry="12" fill="#fef08a" opacity="0.8" filter="blur(4px)"/>
-              <!-- Corpo do Baú -->
               <rect x="12" y="42" width="96" height="43" rx="4" fill="#581c87" stroke="#fef08a" stroke-width="2"/>
               <rect x="12" y="42" width="96" height="43" rx="4" fill="#713f12" opacity="0.7"/>
               <rect x="24" y="42" width="10" height="43" fill="#a16207" opacity="0.6"/>
               <rect x="86" y="42" width="10" height="43" fill="#a16207" opacity="0.6"/>
-              <!-- Fecho Baixo -->
               <rect x="54" y="42" width="12" height="12" rx="2" fill="#facc15" stroke="#ffffff" stroke-width="1"/>
             </svg>
 
@@ -259,7 +252,7 @@
           <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-300/40"></span>
         </div>
 
-        <!-- MENSAGEM / REFLEXÃO DA ESTRELA ABAIXO DO BAÚ -->
+        <!-- MENSAGEM / REFLEXÃO -->
         <div id="reflectionContent" class="w-full text-left fade-in">
           <h3 class="gold-text-glow font-['Cinzel'] font-semibold text-lg sm:text-xl text-center mb-5 tracking-wide">
             A Reflexão: A Estrela que Nunca Deixa de Brilhar
@@ -305,27 +298,17 @@
       if (!isChestOpened) {
         isChestOpened = true;
         
-        // Alternar visual do Baú
         chestClosed.classList.add('hidden');
         chestOpen.classList.remove('hidden');
         chestWrapper.classList.remove('chest-pulse');
         chestLabel.innerHTML = '🌟 A estrela foi liberada!';
         chestLabel.classList.replace('bg-yellow-500/20', 'bg-yellow-400/30');
 
-        // Revelar Estrela Flutuante
         starContainer.classList.remove('hidden');
         starContainer.classList.add('fade-in');
 
-        // Disparar Explosão de Partículas Brilhantes
         const rect = chestWrapper.getBoundingClientRect();
         triggerBurst(rect.left + rect.width / 2, rect.top + rect.height / 3);
-
-        // Tentar tocar música se não estiver tocando
-        if (bgMusic.paused) {
-          bgMusic.play().then(() => {
-            playIcon.className = 'fas fa-pause text-sm ml-0.5';
-          }).catch(() => {});
-        }
       }
     });
 
@@ -473,22 +456,66 @@
       requestAnimationFrame(animateBurst);
     }
 
-    /* --- CONTROLES DO PLAYER DE ÁUDIO --- */
+    /* --- CONTROLES DO PLAYER DE ÁUDIO E PERSISTÊNCIA --- */
     const bgMusic = document.getElementById('bgMusic');
     const playBtn = document.getElementById('playBtn');
     const playIcon = document.getElementById('playIcon');
     const volumeSlider = document.getElementById('volumeSlider');
     const volumeValue = document.getElementById('volumeValue');
     const volumeIcon = document.getElementById('volumeIcon');
+    const musicPulse = document.getElementById('musicPulse');
+
+    function updatePlayUI(isPlaying) {
+      if (isPlaying) {
+        playIcon.className = 'fas fa-pause text-sm ml-0.5';
+        musicPulse.classList.remove('opacity-0');
+      } else {
+        playIcon.className = 'fas fa-play text-sm ml-0.5';
+        musicPulse.classList.add('opacity-0');
+      }
+    }
+
+    // Inicialização automática recuperando o estado da música da página anterior
+    window.addEventListener('DOMContentLoaded', () => {
+      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
+      const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
+
+      if (isPlaying) {
+        bgMusic.currentTime = savedTime;
+        bgMusic.play().then(() => {
+          updatePlayUI(true);
+        }).catch(() => {
+          const unlockAudio = () => {
+            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
+            bgMusic.play().then(() => {
+              updatePlayUI(true);
+            });
+            window.removeEventListener('click', unlockAudio);
+            window.removeEventListener('touchstart', unlockAudio);
+          };
+          window.addEventListener('click', unlockAudio);
+          window.addEventListener('touchstart', unlockAudio);
+        });
+
+        // Salva periodicamente o tempo no localStorage
+        setInterval(() => {
+          if (!bgMusic.paused) {
+            localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+          }
+        }, 250);
+      }
+    });
 
     playBtn.addEventListener('click', () => {
       if (bgMusic.paused) {
         bgMusic.play().then(() => {
-          playIcon.className = 'fas fa-pause text-sm ml-0.5';
-        }).catch(err => console.log("Permissão de áudio necessária:", err));
+          updatePlayUI(true);
+          localStorage.setItem('musicPlaying', 'true');
+        }).catch(err => console.log("Erro ao tocar áudio:", err));
       } else {
         bgMusic.pause();
-        playIcon.className = 'fas fa-play text-sm ml-0.5';
+        updatePlayUI(false);
+        localStorage.setItem('musicPlaying', 'false');
       }
     });
 
@@ -499,6 +526,10 @@
       if (val === 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
       else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
       else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
+    });
+
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
     });
   </script>
 </body>

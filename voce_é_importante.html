@@ -175,7 +175,7 @@
             <p class="text-xs uppercase tracking-widest text-slate-300 font-semibold font-sans">Música de Fundo</p>
             <p class="text-sm font-serif italic text-slate-100 flex items-center gap-1">
               <span>Bela e a Fera</span>
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping"></span>
+              <span id="musicPulse" class="inline-block w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping opacity-0"></span>
             </p>
           </div>
         </div>
@@ -252,7 +252,7 @@
             Você é importante para mim.
           </p>
           <p>
-            Nunca se sinta só, porque você é sempre lembrado com um carinho sincero e um amor que foi crescendo a cada conversa, a cada sorriso e a cada olhar.
+            Nunca se siske ou se sinta só, porque você é sempre lembrado com um carinho sincero e um amor que foi crescendo a cada conversa, a cada sorriso e a cada olhar.
           </p>
           <p>
             Você precisa cuidar do meu coração, pois ele guarda para sempre a certeza do quanto você é especial.
@@ -286,7 +286,8 @@
 
       if (bgMusic.paused) {
         bgMusic.play().then(() => {
-          playIcon.className = 'fas fa-pause text-sm ml-0.5';
+          updatePlayUI(true);
+          localStorage.setItem('musicPlaying', 'true');
         }).catch(() => {});
       }
     });
@@ -388,22 +389,64 @@
       requestAnimationFrame(animateBurst);
     }
 
-    /* --- CONTROLES DE ÁUDIO --- */
+    /* --- CONTROLES DE ÁUDIO E PERSISTÊNCIA --- */
     const bgMusic = document.getElementById('bgMusic');
     const playBtn = document.getElementById('playBtn');
     const playIcon = document.getElementById('playIcon');
     const volumeSlider = document.getElementById('volumeSlider');
     const volumeValue = document.getElementById('volumeValue');
     const volumeIcon = document.getElementById('volumeIcon');
+    const musicPulse = document.getElementById('musicPulse');
+
+    function updatePlayUI(isPlaying) {
+      if (isPlaying) {
+        playIcon.className = 'fas fa-pause text-sm ml-0.5';
+        musicPulse.classList.remove('opacity-0');
+      } else {
+        playIcon.className = 'fas fa-play text-sm ml-0.5';
+        musicPulse.classList.add('opacity-0');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
+      const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
+
+      if (isPlaying) {
+        bgMusic.currentTime = savedTime;
+        bgMusic.play().then(() => {
+          updatePlayUI(true);
+        }).catch(() => {
+          const unlockAudio = () => {
+            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
+            bgMusic.play().then(() => {
+              updatePlayUI(true);
+            });
+            window.removeEventListener('click', unlockAudio);
+            window.removeEventListener('touchstart', unlockAudio);
+          };
+          window.addEventListener('click', unlockAudio);
+          window.addEventListener('touchstart', unlockAudio);
+        });
+
+        setInterval(() => {
+          if (!bgMusic.paused) {
+            localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+          }
+        }, 250);
+      }
+    });
 
     playBtn.addEventListener('click', () => {
       if (bgMusic.paused) {
         bgMusic.play().then(() => {
-          playIcon.className = 'fas fa-pause text-sm ml-0.5';
-        }).catch(() => {});
+          updatePlayUI(true);
+          localStorage.setItem('musicPlaying', 'true');
+        }).catch(err => console.log("Erro ao tocar áudio:", err));
       } else {
         bgMusic.pause();
-        playIcon.className = 'fas fa-play text-sm ml-0.5';
+        updatePlayUI(false);
+        localStorage.setItem('musicPlaying', 'false');
       }
     });
 
@@ -414,6 +457,10 @@
       if (val === 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
       else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
       else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
+    });
+
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
     });
   </script>
 </body>
