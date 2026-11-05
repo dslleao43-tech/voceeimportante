@@ -345,16 +345,28 @@
 
     seal.addEventListener('click', () => {
       bgMusic.currentTime = 0;
-      bgMusic.play().catch(() => {});
+      
+      // Toca a música e inicia a gravação do progresso no localStorage
+      bgMusic.play().then(() => {
+        localStorage.setItem('musicPlaying', 'true');
+        localStorage.setItem('musicCurrentTime', '0');
 
-      // Salva estado e o tempo atual para continuar na próxima página
-      localStorage.setItem('musicPlaying', 'true');
-      localStorage.setItem('musicCurrentTime', '0');
+        // Atualiza o tempo atual da música continuamente a cada 250ms
+        setInterval(() => {
+          if (!bgMusic.paused) {
+            localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+          }
+        }, 250);
+      }).catch(err => {
+        console.log("Erro ao reproduzir áudio:", err);
+      });
 
       envelope.classList.add('open');
       borderContainer.classList.add('zoom-effect');
 
       setTimeout(() => {
+        // Garante que o tempo final exato seja salvo antes de sair da página
+        localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
         window.location.href = "mundos_diferentes.html";
       }, 750);
     });
