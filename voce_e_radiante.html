@@ -350,7 +350,7 @@
   </div>
 
   <!-- Áudio Único -->
-  <audio id="bgMusic" src="belaeafera.mp3" loop preload="auto"></audio>
+  <audio id="bgMusic" src="belaefera.mp3" loop preload="auto"></audio>
 
   <script>
     /* --- EFEITO DOS CORAÇÕES E INTERAÇÃO PRINCIPAL --- */
@@ -560,7 +560,7 @@
         bgMusic.play().then(() => {
           updatePlayUI(true);
           localStorage.setItem('musicPlaying', 'true');
-        }).catch(err => console.log("Erro ao tocar áudio:", err));
+        }).catch(err => console.log("Em execução de áudio:", err));
       } else {
         bgMusic.pause();
         updatePlayUI(false);
