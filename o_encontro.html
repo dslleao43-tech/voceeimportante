@@ -4,22 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>O Encontro</title>
-  
-  <!-- Tailwind CSS CDN -->
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -35,18 +28,15 @@
       padding: 2rem 1rem;
     }
 
-    /* Canvas Cósmico Fundo */
     #cosmicCanvas {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
       pointer-events: none;
     }
 
-    /* --- BORDA PRATEADA CORRENDO NO PERÍMETRO EXTERNO --- */
     .silver-running-border {
       position: relative;
       border-radius: 26px;
@@ -75,11 +65,10 @@
     }
 
     @keyframes rotateSilverBorder {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* --- ESTILOS DO CARD --- */
     .silver-text-glow {
       background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 30%, #94a3b8 60%, #ffffff 90%);
       -webkit-background-clip: text;
@@ -106,6 +95,7 @@
       backdrop-filter: blur(8px);
       text-decoration: none;
     }
+
     .nav-card-btn:hover {
       transform: scale(1.05) translateY(-2px);
       box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
@@ -113,14 +103,20 @@
 
     input[type=range] { -webkit-appearance: none; background: transparent; }
     input[type=range]::-webkit-slider-runnable-track {
-      width: 100%; height: 6px; cursor: pointer;
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
       background: linear-gradient(90deg, #334155, #cbd5e1, #ffffff, #94a3b8);
       border-radius: 3px;
     }
     input[type=range]::-webkit-slider-thumb {
-      height: 18px; width: 18px; border-radius: 50%;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #ffffff, #94a3b8, #334155);
-      cursor: pointer; -webkit-appearance: none; margin-top: -6px;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
     }
 
     .fade-in { animation: fadeIn 0.45s ease-in-out forwards; }
@@ -130,18 +126,16 @@
     }
   </style>
 </head>
-<body>
 
-  <!-- Canvas Cósmico de Fundo com Estrelas Cadentes -->
-  <canvas id="cosmicCanvas"></canvas>
+<body>
+  <canvas id="cosmicCanvas" aria-hidden="true"></canvas>
 
   <div id="app-container" class="z-10 w-full max-w-2xl px-4 py-4 flex flex-col items-center">
-    
-    <!-- Player de Áudio Superior (Toca continuamente) -->
+
     <header class="w-full max-w-xl z-20 mb-6 flex flex-col items-center">
-      <div class="w-full bg-slate-950/85 backdrop-blur-md rounded-full px-6 py-3 border border-slate-400/40 shadow-2xl flex items-center justify-between gap-4">
+      <div class="w-full bg-slate-950/85 backdrop-blur-md rounded-full px-5 sm:px-6 py-3 border border-slate-400/40 shadow-2xl flex items-center justify-between gap-3 sm:gap-4">
         <div class="flex items-center gap-3">
-          <button id="playBtn" class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-200 via-white to-slate-400 text-slate-900 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer">
+          <button id="playBtn" type="button" class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-200 via-white to-slate-400 text-slate-900 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer" title="Tocar / Pausar" aria-label="Tocar ou pausar música">
             <i id="playIcon" class="fas fa-play text-sm ml-0.5"></i>
           </button>
           <div class="hidden sm:block">
@@ -152,18 +146,17 @@
             </p>
           </div>
         </div>
-        <div class="flex items-center gap-3 flex-1 max-w-xs">
+
+        <div class="flex items-center gap-2 sm:gap-3 flex-1 max-w-xs">
           <i id="volumeIcon" class="fas fa-volume-down text-slate-300 text-xs sm:text-sm"></i>
-          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" class="w-full">
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" class="w-full" title="Volume" aria-label="Volume da música">
           <i class="fas fa-volume-up text-slate-300 text-xs sm:text-sm"></i>
         </div>
         <span id="volumeValue" class="text-xs font-mono text-slate-300 min-w-[35px] text-right">50%</span>
       </div>
     </header>
 
-    <!-- Container da Borda Prateada Animada -->
     <div class="silver-running-border w-full shadow-2xl">
-      <!-- Conteúdo do Card Interior -->
       <main class="glass-card p-7 sm:p-10 text-center flex flex-col items-center fade-in">
         <div class="mb-3 text-slate-300/70 flex items-center gap-3">
           <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-slate-300/50"></span>
@@ -175,14 +168,15 @@
           O ENCONTRO
         </h1>
 
-        <!-- Área de Conteúdo Contínuo -->
         <div class="w-full px-2 py-1 text-left space-y-5">
           <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             Sabe, a nossa história tem muito daquele conto da Bela e a Fera. Nós viemos de mundos completamente diferentes, de caminhos que pareciam não se cruzar. Mas quando a gente se encontrou, a aparência e qualquer tipo de preconceito simplesmente sumiram — eles nunca fizeram parte da nossa história. O que importou de verdade foi a alma.
           </p>
+
           <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             A Bela e a Fera nos ensinam que o castelo não é só um lugar de pedra, mas sim o mundo que a gente constrói por dentro. Lá fora, o mundo pode fazer barulho, julgar ou não entender nada sobre nós. Mas quando estamos juntos, criamos o nosso próprio universo protegido. O mundo externo não tem poder para atrapalhar o que é verdadeiro no nosso mundo interno; a paz que sentimos um no outro é blindada por um afeto sincero.
           </p>
+
           <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
             A gente viveu e continua vivendo momentos mágicos, com aquele frio na barriga gostoso, parecendo dois adolescentes descobrindo o amor, mas com a maturidade e a certeza de quem já sabe o que quer da vida. Cada dia que passa é um presente: a gente se conhece mais, se entende mais, aceita as diferenças do outro e vê a vontade de estar perto, de trocar um abraço, um carinho e um sorriso crescer a cada instante. Estar com você é meu refúgio e minha paz, e o que sinto por você é de uma verdade tão bonita que não tem como disfarçar, através dos olhos que brilham como estrelas no céu.
           </p>
@@ -194,22 +188,17 @@
           <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-300/40"></span>
         </div>
 
-        <!-- Botões de Navegação Direcionados para os Arquivos HTML Seguintes -->
-        <div class="flex items-center justify-between w-full px-2 gap-4">
-          <a href="mundos_diferentes.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
+        <nav class="flex items-center justify-between w-full px-2 gap-4" aria-label="Navegação do livro">
+          <a href="mundos_diferentes.html" class="nav-card-btn rounded-full px-5 sm:px-6 py-2.5 flex items-center justify-center gap-2 group">
             <i class="fas fa-chevron-left text-xs text-slate-300 transform group-hover:-translate-x-1 transition-transform duration-300"></i>
-            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
-              ANTERIOR
-            </span>
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">ANTERIOR</span>
           </a>
 
-          <a href="voce_brilha.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
-            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
-              PRÓXIMA
-            </span>
+          <a href="voce_brilha.html" class="nav-card-btn rounded-full px-5 sm:px-6 py-2.5 flex items-center justify-center gap-2 group">
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">PRÓXIMA</span>
             <i class="fas fa-chevron-right text-xs text-slate-300 transform group-hover:translate-x-1 transition-transform duration-300"></i>
           </a>
-        </div>
+        </nav>
       </main>
     </div>
 
@@ -220,11 +209,11 @@
     </footer>
   </div>
 
-  <!-- Áudio Único -->
+  <!-- Mantenha belaefera.mp3 na mesma pasta deste arquivo HTML. -->
   <audio id="bgMusic" src="belaefera.mp3" loop preload="auto"></audio>
 
   <script>
-    /* --- CONTROLES DO PLAYER DE ÁUDIO E PERSISTÊNCIA --- */
+    // Player de áudio e continuidade entre os capítulos.
     const bgMusic = document.getElementById('bgMusic');
     const playBtn = document.getElementById('playBtn');
     const playIcon = document.getElementById('playIcon');
@@ -233,75 +222,110 @@
     const volumeIcon = document.getElementById('volumeIcon');
     const musicPulse = document.getElementById('musicPulse');
 
-    bgMusic.volume = 0.5;
+    const MUSIC_PLAYING_KEY = 'musicPlaying';
+    const MUSIC_TIME_KEY = 'musicCurrentTime';
+    const MUSIC_VOLUME_KEY = 'musicVolume';
 
     function updatePlayUI(isPlaying) {
-      if (isPlaying) {
-        playIcon.className = 'fas fa-pause text-sm ml-0.5';
-        musicPulse.classList.remove('opacity-0');
-      } else {
-        playIcon.className = 'fas fa-play text-sm ml-0.5';
-        musicPulse.classList.add('opacity-0');
+      playIcon.className = isPlaying
+        ? 'fas fa-pause text-sm ml-0.5'
+        : 'fas fa-play text-sm ml-0.5';
+      musicPulse.classList.toggle('opacity-0', !isPlaying);
+    }
+
+    function saveMusicState() {
+      try {
+        localStorage.setItem(MUSIC_TIME_KEY, String(bgMusic.currentTime || 0));
+        localStorage.setItem(MUSIC_PLAYING_KEY, String(!bgMusic.paused));
+        localStorage.setItem(MUSIC_VOLUME_KEY, String(bgMusic.volume));
+      } catch (error) {
+        console.warn('Não foi possível salvar o estado da música:', error);
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
-      const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
+    function updateVolumeUI(value) {
+      const volume = Number(value);
+      volumeValue.textContent = `${Math.round(volume * 100)}%`;
 
-      if (isPlaying) {
-        bgMusic.currentTime = savedTime;
-        bgMusic.play().then(() => {
-          updatePlayUI(true);
-        }).catch(() => {
-          const unlockAudio = () => {
-            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
-            bgMusic.play().then(() => {
-              updatePlayUI(true);
-            });
-            window.removeEventListener('click', unlockAudio);
-            window.removeEventListener('touchstart', unlockAudio);
-          };
-          window.addEventListener('click', unlockAudio);
-          window.addEventListener('touchstart', unlockAudio);
-        });
+      if (volume === 0) {
+        volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
+      } else if (volume < 0.5) {
+        volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
+      } else {
+        volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
       }
+    }
 
-      setInterval(() => {
-        if (!bgMusic.paused) {
-          localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+    // Restaura volume e posição. Alguns navegadores exigem um clique
+    // do visitante antes de permitir que a música volte a tocar.
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const savedVolume = localStorage.getItem(MUSIC_VOLUME_KEY);
+        const savedTime = Number(localStorage.getItem(MUSIC_TIME_KEY) || 0);
+        const shouldPlay = localStorage.getItem(MUSIC_PLAYING_KEY) === 'true';
+
+        if (savedVolume !== null) {
+          bgMusic.volume = Math.min(1, Math.max(0, Number(savedVolume)));
+          volumeSlider.value = String(bgMusic.volume);
+          updateVolumeUI(bgMusic.volume);
+        } else {
+          bgMusic.volume = 0.5;
         }
-      }, 250);
+
+        if (shouldPlay) {
+          const resumeMusic = () => {
+            if (Number.isFinite(savedTime)) {
+              bgMusic.currentTime = savedTime;
+            }
+
+            bgMusic.play()
+              .then(() => updatePlayUI(true))
+              .catch(() => updatePlayUI(false));
+          };
+
+          bgMusic.addEventListener('loadedmetadata', resumeMusic, { once: true });
+          if (bgMusic.readyState >= 1) resumeMusic();
+        }
+      } catch (error) {
+        console.warn('Não foi possível recuperar o estado da música:', error);
+      }
     });
 
-    playBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
+    playBtn.addEventListener('click', async () => {
       if (bgMusic.paused) {
-        bgMusic.play().then(() => {
+        try {
+          await bgMusic.play();
           updatePlayUI(true);
-          localStorage.setItem('musicPlaying', 'true');
-        }).catch(err => console.log("Erro ao tocar áudio:", err));
+          localStorage.setItem(MUSIC_PLAYING_KEY, 'true');
+        } catch (error) {
+          console.error('Não foi possível iniciar a música:', error);
+          updatePlayUI(false);
+        }
       } else {
         bgMusic.pause();
         updatePlayUI(false);
-        localStorage.setItem('musicPlaying', 'false');
+        localStorage.setItem(MUSIC_PLAYING_KEY, 'false');
+      }
+      saveMusicState();
+    });
+
+    volumeSlider.addEventListener('input', (event) => {
+      bgMusic.volume = Number(event.target.value);
+      updateVolumeUI(bgMusic.volume);
+      try {
+        localStorage.setItem(MUSIC_VOLUME_KEY, String(bgMusic.volume));
+      } catch (error) {
+        console.warn('Não foi possível salvar o volume:', error);
       }
     });
 
-    volumeSlider.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      bgMusic.volume = val;
-      volumeValue.textContent = `${Math.round(val * 100)}%`;
-      if (val === 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
-      else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
-      else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
-    });
+    bgMusic.addEventListener('play', () => updatePlayUI(true));
+    bgMusic.addEventListener('pause', () => updatePlayUI(false));
+    bgMusic.addEventListener('timeupdate', saveMusicState);
+    window.addEventListener('pagehide', saveMusicState);
+    window.addEventListener('beforeunload', saveMusicState);
 
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
-    });
-
-    /* --- CANVAS CÓSMICO --- */
+    // Fundo cósmico com estrelas e estrelas cadentes.
     const canvas = document.getElementById('cosmicCanvas');
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
@@ -325,8 +349,10 @@
     }
 
     const shootingStars = [];
+
     class ShootingStar {
       constructor() { this.reset(); }
+
       reset() {
         this.x = Math.random() * width;
         this.y = -20;
@@ -336,22 +362,28 @@
         this.opacity = 1;
         this.active = true;
       }
+
       update() {
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed;
         this.opacity -= 0.01;
         if (this.opacity <= 0 || this.y > height) this.active = false;
       }
+
       draw() {
         if (!this.active) return;
+
         ctx.save();
         ctx.globalAlpha = this.opacity;
+
         const tailX = this.x - Math.cos(this.angle) * this.length;
         const tailY = this.y - Math.sin(this.angle) * this.length;
         const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+
         gradient.addColorStop(0, '#ffffff');
         gradient.addColorStop(0.5, 'rgba(203, 213, 225, 0.5)');
         gradient.addColorStop(1, 'transparent');
+
         ctx.strokeStyle = gradient;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
@@ -364,32 +396,45 @@
 
     function animateCosmos() {
       ctx.clearRect(0, 0, width, height);
-      const grad = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, Math.max(width, height));
-      grad.addColorStop(0, '#0d0f17');
-      grad.addColorStop(1, '#030407');
-      ctx.fillStyle = grad;
+
+      const gradient = ctx.createRadialGradient(
+        width / 2, height / 2, 10,
+        width / 2, height / 2, Math.max(width, height)
+      );
+      gradient.addColorStop(0, '#0d0f17');
+      gradient.addColorStop(1, '#030407');
+
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
-      stars.forEach(s => {
-        if (s.growing) { s.alpha += s.speed; if (s.alpha >= 1) s.growing = false; }
-        else { s.alpha -= s.speed; if (s.alpha <= 0.2) s.growing = true; }
-        ctx.fillStyle = `rgba(226, 232, 240, ${s.alpha})`;
+      stars.forEach(star => {
+        if (star.growing) {
+          star.alpha += star.speed;
+          if (star.alpha >= 1) star.growing = false;
+        } else {
+          star.alpha -= star.speed;
+          if (star.alpha <= 0.2) star.growing = true;
+        }
+
+        ctx.fillStyle = `rgba(226, 232, 240, ${star.alpha})`;
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fill();
       });
 
       if (Math.random() < 0.03 && shootingStars.length < 3) {
         shootingStars.push(new ShootingStar());
       }
-      shootingStars.forEach((ss, index) => {
-        ss.update();
-        ss.draw();
-        if (!ss.active) shootingStars.splice(index, 1);
-      });
+
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        shootingStars[i].update();
+        shootingStars[i].draw();
+        if (!shootingStars[i].active) shootingStars.splice(i, 1);
+      }
 
       requestAnimationFrame(animateCosmos);
     }
+
     animateCosmos();
   </script>
 </body>

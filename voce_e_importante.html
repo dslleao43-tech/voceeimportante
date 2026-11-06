@@ -4,146 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Você é Importante</title>
-  
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #030613;
-      font-family: 'Cormorant Garamond', serif;
-      overflow-x: hidden;
-      position: relative;
-      user-select: none;
-      color: #e2e8f0;
+      min-height: 100vh; display: flex; justify-content: center; align-items: center;
+      background-color: #030613; font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden; position: relative; user-select: none; color: #e2e8f0;
       padding: 2rem 1rem;
     }
-
-    /* Canvas Cósmico Fundo */
     #cosmicCanvas, #burstCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
     }
     #cosmicCanvas { z-index: 0; }
     #burstCanvas { z-index: 15; }
-
-    /* Borda Prateada e Rosada Animada */
     .silver-running-border {
-      position: relative;
-      border-radius: 26px;
-      padding: 2px;
-      overflow: hidden;
+      position: relative; border-radius: 26px; padding: 2px; overflow: hidden;
     }
-
     .silver-running-border::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(
-        transparent 0deg,
-        transparent 280deg,
-        rgba(236, 72, 153, 0.4) 320deg,
-        rgba(255, 255, 255, 1) 345deg,
-        rgba(244, 114, 182, 0.8) 355deg,
-        transparent 360deg
-      );
-      animation: rotateSilverBorder 4s linear infinite;
-      z-index: 1;
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: conic-gradient(transparent 0deg, transparent 280deg,
+        rgba(236, 72, 153, 0.4) 320deg, rgba(255, 255, 255, 1) 345deg,
+        rgba(244, 114, 182, 0.8) 355deg, transparent 360deg);
+      animation: rotateSilverBorder 4s linear infinite; z-index: 1;
     }
-
-    @keyframes rotateSilverBorder {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Estilos de Texto Glow */
+    @keyframes rotateSilverBorder { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .silver-text-glow {
       background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 30%, #94a3b8 60%, #ffffff 90%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       text-shadow: 0 0 20px rgba(226, 232, 240, 0.4);
     }
-
     .rose-text-glow {
       background: linear-gradient(135deg, #ffffff 0%, #f472b6 50%, #db2777 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       text-shadow: 0 0 25px rgba(244, 114, 182, 0.6);
     }
-
     .glass-card {
-      position: relative;
-      z-index: 2;
-      background: rgba(10, 15, 30, 0.94);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      color: #f8fafc;
-      border-radius: 24px;
-      width: 100%;
+      position: relative; z-index: 2; background: rgba(10, 15, 30, 0.94);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      color: #f8fafc; border-radius: 24px; width: 100%;
     }
-
-    /* --- ANIMAÇÃO DE PULSAÇÃO DO CORAÇÃO --- */
     @keyframes heartBeating {
       0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.5)); }
       14% { transform: scale(1.15); filter: drop-shadow(0 0 25px rgba(236, 72, 153, 0.9)); }
       28% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(244, 114, 182, 0.6)); }
       42% { transform: scale(1.12); filter: drop-shadow(0 0 22px rgba(236, 72, 153, 0.8)); }
-      70% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.5)); }
-      100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.5)); }
+      70%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.5)); }
     }
-
-    .pulsing-heart {
-      animation: heartBeating 1.5s ease-in-out infinite;
-      transform-origin: center;
-    }
-
+    .pulsing-heart { animation: heartBeating 1.5s ease-in-out infinite; transform-origin: center; }
     .nav-card-btn {
       background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(148,163,184,0.06) 50%, rgba(15,23,42,0.3) 100%);
       border: 1px solid rgba(255, 255, 255, 0.35);
       box-shadow: 0 0 12px rgba(226, 232, 240, 0.15);
-      transition: all 0.4s ease;
-      backdrop-filter: blur(8px);
-      text-decoration: none;
+      transition: all 0.4s ease; backdrop-filter: blur(8px); text-decoration: none;
     }
-    .nav-card-btn:hover {
-      transform: scale(1.05) translateY(-2px);
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
-    }
-
+    .nav-card-btn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 0 25px rgba(255, 255, 255, 0.5); }
     .fade-in { animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     input[type=range] { -webkit-appearance: none; background: transparent; }
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%; height: 6px; cursor: pointer;
-      background: linear-gradient(90deg, #334155, #cbd5e1, #ffffff, #94a3b8);
-      border-radius: 3px;
+      background: linear-gradient(90deg, #334155, #cbd5e1, #ffffff, #94a3b8); border-radius: 3px;
     }
     input[type=range]::-webkit-slider-thumb {
       height: 18px; width: 18px; border-radius: 50%;
@@ -153,14 +79,10 @@
   </style>
 </head>
 <body>
-
-  <!-- Canvas Cósmico e Explosão -->
   <canvas id="cosmicCanvas"></canvas>
   <canvas id="burstCanvas"></canvas>
 
   <div id="app-container" class="z-10 w-full max-w-2xl px-4 py-4 flex flex-col items-center">
-    
-    <!-- Player de Áudio Superior -->
     <header class="w-full max-w-xl z-20 mb-6 flex flex-col items-center">
       <div class="w-full bg-slate-950/85 backdrop-blur-md rounded-full px-6 py-3 border border-slate-400/40 shadow-2xl flex items-center justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -184,10 +106,8 @@
       </div>
     </header>
 
-    <!-- Card Principal -->
     <div class="silver-running-border w-full shadow-2xl">
       <main class="glass-card p-7 sm:p-10 text-center flex flex-col items-center">
-        
         <div class="mb-3 text-slate-300/70 flex items-center gap-3">
           <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-rose-300/50"></span>
           <i class="fas fa-heart text-sm text-pink-400 animate-pulse"></i>
@@ -198,11 +118,8 @@
           VOCÊ É IMPORTANTE
         </h1>
 
-        <!-- ÁREA DO CORAÇÃO PULSANTE RADIANTE -->
         <div class="relative w-full flex flex-col items-center justify-center my-4 min-h-[200px]">
-          
           <div id="heartContainer" class="cursor-pointer flex flex-col items-center">
-            <!-- SVG do Coração com Pulsação Suave -->
             <svg class="w-32 h-32 sm:w-36 sm:h-36 pulsing-heart" viewBox="0 0 100 100" fill="none">
               <path d="M50 88 C20 60, 5 40, 5 25 C5 12, 18 3, 32 3 C41 3, 47 8, 50 14 C53 8, 59 3, 68 3 C82 3, 95 12, 95 25 C95 40, 80 60, 50 88 Z" fill="url(#heartGrad)" stroke="#f472b6" stroke-width="1.5" />
               <circle cx="50" cy="40" r="12" fill="#ffffff" filter="blur(6px)" opacity="0.7" />
@@ -217,14 +134,12 @@
             </svg>
           </div>
 
-          <!-- BOTÃO INTERATIVO -->
           <button id="actionBtn" class="mt-6 px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 text-white font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 border border-pink-300/40 cursor-pointer flex items-center gap-2">
             <i class="fas fa-sparkles text-xs"></i>
             <span>Aperte aqui e veja o que cativou</span>
             <i class="fas fa-sparkles text-xs"></i>
           </button>
 
-          <!-- CONTEÚDO REVELADO -->
           <div id="revealedContent" class="hidden mt-6 w-full text-center fade-in">
             <div class="p-4 rounded-2xl bg-rose-950/30 border border-rose-400/30 backdrop-blur-sm mb-4">
               <i class="fas fa-quote-left text-2xl text-rose-300/50 mb-2"></i>
@@ -233,7 +148,6 @@
               </p>
             </div>
           </div>
-
         </div>
 
         <div class="mt-2 mb-6 flex items-center justify-center gap-2 text-slate-300/60 w-full">
@@ -242,17 +156,10 @@
           <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-rose-300/40"></span>
         </div>
 
-        <!-- MENSAGEM PRINCIPAL -->
         <div class="w-full text-left font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic px-2 sm:px-4 space-y-4">
-          <p class="text-center font-semibold text-pink-200">
-            Você é extremamente importante para mim.
-          </p>
-          <p>
-            Nunca se sinta só, porque você é sempre lembrado com um carinho sincero e um afeto genuíno que foi crescendo a cada conversa, a cada sorriso e a cada olhar trocado.
-          </p>
-          <p>
-            Você guarda para sempre a certeza de um lugar especial onde a paz e a amizade verdadeira habitam.
-          </p>
+          <p class="text-center font-semibold text-pink-200">Você é extremamente importante para mim.</p>
+          <p>Nunca se sinta só, porque você é sempre lembrado com um carinho sincero e um afeto genuíno que foi crescendo a cada conversa, a cada sorriso e a cada olhar trocado.</p>
+          <p>Você guarda para sempre a certeza de um lugar especial onde a paz e a amizade verdadeira habitam.</p>
         </div>
 
         <div class="mt-8 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
@@ -261,24 +168,16 @@
           <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-rose-300/40"></span>
         </div>
 
-        <!-- Botões de Navegação -->
         <div class="flex items-center justify-between w-full px-2 gap-4">
           <a href="voce_brilha.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
             <i class="fas fa-chevron-left text-xs text-slate-300 transform group-hover:-translate-x-1 transition-transform duration-300"></i>
-            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
-              ANTERIOR
-            </span>
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">ANTERIOR</span>
           </a>
-
-          <!-- LINK CORRIGIDO PARA A ÚLTIMA PÁGINA -->
           <a href="voce_e_radiante.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
-            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
-              PRÓXIMA
-            </span>
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">PRÓXIMA</span>
             <i class="fas fa-chevron-right text-xs text-slate-300 transform group-hover:translate-x-1 transition-transform duration-300"></i>
           </a>
         </div>
-
       </main>
     </div>
 
@@ -289,10 +188,10 @@
     </footer>
   </div>
 
-  <!-- Áudio Único -->
   <audio id="bgMusic" src="belaefera.mp3" loop preload="auto"></audio>
 
   <script>
+    /* --- REVELAÇÃO DA MENSAGEM --- */
     const actionBtn = document.getElementById('actionBtn');
     const revealedContent = document.getElementById('revealedContent');
     const heartContainer = document.getElementById('heartContainer');
@@ -300,16 +199,20 @@
     actionBtn.addEventListener('click', () => {
       revealedContent.classList.remove('hidden');
       actionBtn.classList.add('hidden');
-
       const rect = heartContainer.getBoundingClientRect();
       triggerBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
     });
 
-    /* --- CANVAS CÓSMICO DE FUNDO --- */
+    /* --- FUNDO CÓSMICO --- */
     const canvas = document.getElementById('cosmicCanvas');
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
+
+    const burstCanvas = document.getElementById('burstCanvas');
+    const burstCtx = burstCanvas.getContext('2d');
+    burstCanvas.width = width;
+    burstCanvas.height = height;
 
     window.addEventListener('resize', () => {
       width = canvas.width = window.innerWidth;
@@ -321,12 +224,9 @@
     const stars = [];
     for (let i = 0; i < 160; i++) {
       stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.6 + 0.3,
-        alpha: Math.random(),
-        speed: Math.random() * 0.02 + 0.005,
-        growing: Math.random() > 0.5
+        x: Math.random() * width, y: Math.random() * height,
+        radius: Math.random() * 1.6 + 0.3, alpha: Math.random(),
+        speed: Math.random() * 0.02 + 0.005, growing: Math.random() > 0.5
       });
     }
 
@@ -346,63 +246,47 @@
         ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
         ctx.fill();
       });
-
       requestAnimationFrame(animateCosmos);
     }
     animateCosmos();
 
     /* --- EXPLOSÃO DE PARTÍCULAS --- */
-    const burstCanvas = document.getElementById('burstCanvas');
-    const burstCtx = burstCanvas.getContext('2d');
-    burstCanvas.width = width;
-    burstCanvas.height = height;
-
     let burstParticles = [];
+    let burstAnimationRunning = false;
 
     function triggerBurst(originX, originY) {
       for (let i = 0; i < 100; i++) {
         const angle = Math.random() * Math.PI * 2;
         const speed = Math.random() * 8 + 2;
         burstParticles.push({
-          x: originX,
-          y: originY,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 1.5,
-          radius: Math.random() * 3.5 + 1,
-          alpha: 1,
-          decay: Math.random() * 0.02 + 0.015,
+          x: originX, y: originY, vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.5, radius: Math.random() * 3.5 + 1,
+          alpha: 1, decay: Math.random() * 0.02 + 0.015,
           color: Math.random() > 0.4 ? '#f472b6' : '#ffffff'
         });
       }
-      animateBurst();
+      if (!burstAnimationRunning) animateBurst();
     }
 
     function animateBurst() {
-      if (burstParticles.length === 0) return;
+      burstAnimationRunning = true;
       burstCtx.clearRect(0, 0, width, height);
-
-      burstParticles.forEach((p, i) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.alpha -= p.decay;
-
-        if (p.alpha > 0) {
-          burstCtx.save();
-          burstCtx.globalAlpha = p.alpha;
-          burstCtx.fillStyle = p.color;
-          burstCtx.beginPath();
-          burstCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          burstCtx.fill();
-          burstCtx.restore();
-        } else {
-          burstParticles.splice(i, 1);
-        }
-      });
-
-      requestAnimationFrame(animateBurst);
+      for (let i = burstParticles.length - 1; i >= 0; i--) {
+        const p = burstParticles[i];
+        p.x += p.vx; p.y += p.vy; p.alpha -= p.decay;
+        if (p.alpha <= 0) { burstParticles.splice(i, 1); continue; }
+        burstCtx.save(); burstCtx.globalAlpha = p.alpha; burstCtx.fillStyle = p.color;
+        burstCtx.beginPath(); burstCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        burstCtx.fill(); burstCtx.restore();
+      }
+      if (burstParticles.length > 0) requestAnimationFrame(animateBurst);
+      else {
+        burstCtx.clearRect(0, 0, width, height);
+        burstAnimationRunning = false;
+      }
     }
 
-    /* --- CONTROLES DE ÁUDIO E PERSISTÊNCIA --- */
+    /* --- PLAYER E PERSISTÊNCIA DA MÚSICA --- */
     const bgMusic = document.getElementById('bgMusic');
     const playBtn = document.getElementById('playBtn');
     const playIcon = document.getElementById('playIcon');
@@ -411,72 +295,90 @@
     const volumeIcon = document.getElementById('volumeIcon');
     const musicPulse = document.getElementById('musicPulse');
 
-    bgMusic.volume = 0.5;
-
     function updatePlayUI(isPlaying) {
-      if (isPlaying) {
-        playIcon.className = 'fas fa-pause text-sm ml-0.5';
-        musicPulse.classList.remove('opacity-0');
-      } else {
-        playIcon.className = 'fas fa-play text-sm ml-0.5';
-        musicPulse.classList.add('opacity-0');
+      playIcon.className = isPlaying ? 'fas fa-pause text-sm ml-0.5' : 'fas fa-play text-sm ml-0.5';
+      musicPulse.classList.toggle('opacity-0', !isPlaying);
+    }
+
+    function updateVolumeUI(value) {
+      const val = Number(value);
+      volumeSlider.value = val;
+      volumeValue.textContent = `${Math.round(val * 100)}%`;
+      if (val === 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
+      else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
+      else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
+    }
+
+    function saveMusicState() {
+      try {
+        localStorage.setItem('musicPlaying', String(!bgMusic.paused));
+        localStorage.setItem('musicCurrentTime', String(bgMusic.currentTime || 0));
+        localStorage.setItem('musicVolume', String(bgMusic.volume));
+      } catch (error) {
+        console.warn('Não foi possível salvar o estado da música:', error);
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
-      const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
-
-      if (isPlaying) {
-        bgMusic.currentTime = savedTime;
-        bgMusic.play().then(() => {
-          updatePlayUI(true);
-        }).catch(() => {
-          const unlockAudio = () => {
-            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
-            bgMusic.play().then(() => {
-              updatePlayUI(true);
-            });
-            window.removeEventListener('click', unlockAudio);
-            window.removeEventListener('touchstart', unlockAudio);
-          };
-          window.addEventListener('click', unlockAudio);
-          window.addEventListener('touchstart', unlockAudio);
-        });
-
-        setInterval(() => {
-          if (!bgMusic.paused) {
-            localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+    async function resumeMusicFromSavedPosition() {
+      try {
+        const savedTime = Number(localStorage.getItem('musicCurrentTime') || 0);
+        if (Number.isFinite(savedTime) && savedTime > 0) bgMusic.currentTime = savedTime;
+        await bgMusic.play();
+        updatePlayUI(true);
+      } catch (error) {
+        updatePlayUI(false);
+        const unlockAudio = async () => {
+          try {
+            const savedTime = Number(localStorage.getItem('musicCurrentTime') || 0);
+            if (Number.isFinite(savedTime) && savedTime > 0) bgMusic.currentTime = savedTime;
+            await bgMusic.play();
+            updatePlayUI(true);
+          } catch (playError) {
+            console.warn('O navegador ainda não liberou o áudio:', playError);
           }
-        }, 250);
+          window.removeEventListener('click', unlockAudio);
+          window.removeEventListener('touchstart', unlockAudio);
+        };
+        window.addEventListener('click', unlockAudio, { once: true });
+        window.addEventListener('touchstart', unlockAudio, { once: true });
       }
-    });
+    }
 
-    playBtn.addEventListener('click', () => {
+    const savedVolume = Number(localStorage.getItem('musicVolume') || 0.5);
+    bgMusic.volume = Number.isFinite(savedVolume) ? Math.min(1, Math.max(0, savedVolume)) : 0.5;
+    updateVolumeUI(bgMusic.volume);
+
+    if (localStorage.getItem('musicPlaying') === 'true') resumeMusicFromSavedPosition();
+    else updatePlayUI(false);
+
+    playBtn.addEventListener('click', async () => {
       if (bgMusic.paused) {
-        bgMusic.play().then(() => {
+        try {
+          await bgMusic.play();
           updatePlayUI(true);
           localStorage.setItem('musicPlaying', 'true');
-        }).catch(err => console.log("Erro ao tocar áudio:", err));
+        } catch (error) {
+          console.warn('Erro ao tocar áudio:', error);
+        }
       } else {
         bgMusic.pause();
         updatePlayUI(false);
         localStorage.setItem('musicPlaying', 'false');
       }
+      saveMusicState();
     });
 
-    volumeSlider.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      bgMusic.volume = val;
-      volumeValue.textContent = `${Math.round(val * 100)}%`;
-      if (val === 0) volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
-      else if (val < 0.5) volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
-      else volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
+    volumeSlider.addEventListener('input', (event) => {
+      bgMusic.volume = Number(event.target.value);
+      updateVolumeUI(bgMusic.volume);
+      saveMusicState();
     });
 
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
-    });
+    bgMusic.addEventListener('play', () => updatePlayUI(true));
+    bgMusic.addEventListener('pause', () => updatePlayUI(false));
+    bgMusic.addEventListener('timeupdate', saveMusicState);
+    window.addEventListener('pagehide', saveMusicState);
+    window.addEventListener('beforeunload', saveMusicState);
   </script>
 </body>
 </html>

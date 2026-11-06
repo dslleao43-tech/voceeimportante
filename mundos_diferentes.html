@@ -3,23 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O Encontro dos Mundos Diferentes</title>
-  
-  <!-- Tailwind CSS CDN -->
+  <title>Mundos Diferentes</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -35,7 +28,6 @@
       padding: 2rem 1rem;
     }
 
-    /* Canvas Cósmico de Fundo */
     #cosmicCanvas {
       position: fixed;
       top: 0;
@@ -46,7 +38,6 @@
       pointer-events: none;
     }
 
-    /* --- BORDA PRATEADA CORRENDO EXCLUSIVAMENTE NO PERÍMETRO EXTERNO --- */
     .silver-running-border {
       position: relative;
       border-radius: 26px;
@@ -79,7 +70,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Card com Fundo Escuro e Leitura Fluida */
     .glass-card {
       position: relative;
       z-index: 2;
@@ -98,25 +88,20 @@
       text-shadow: 0 0 20px rgba(226, 232, 240, 0.4);
     }
 
-    /* Botões de Navegação */
     .nav-card-btn {
       background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(148,163,184,0.06) 50%, rgba(15,23,42,0.3) 100%);
       border: 1px solid rgba(255, 255, 255, 0.35);
       box-shadow: 0 0 12px rgba(226, 232, 240, 0.15);
       transition: all 0.4s ease;
       backdrop-filter: blur(8px);
+      text-decoration: none;
     }
-    .nav-card-btn:hover:not(.disabled-btn) {
+
+    .nav-card-btn:hover {
       transform: scale(1.05) translateY(-2px);
       box-shadow: 0 0 25px rgba(255, 255, 255, 0.45);
     }
-    .disabled-btn {
-      opacity: 0.35;
-      pointer-events: none;
-      border-color: rgba(255, 255, 255, 0.1);
-    }
 
-    /* Estilo Personalizado do Input Range */
     input[type=range] { -webkit-appearance: none; background: transparent; }
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%; height: 6px; cursor: pointer;
@@ -129,33 +114,23 @@
       cursor: pointer; -webkit-appearance: none; margin-top: -6px;
     }
 
-    /* Animações de Transição de Páginas */
     .fade-in { animation: fadeIn 0.45s ease-in-out forwards; }
-    .fade-out { animation: fadeOut 0.35s ease-in-out forwards; }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes fadeOut {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(-8px); }
-    }
   </style>
 </head>
-<body>
 
-  <!-- Canvas Cósmico com Estrelas Cadentes -->
+<body>
   <canvas id="cosmicCanvas"></canvas>
 
   <div id="app-container" class="z-10 w-full max-w-2xl px-2 sm:px-4 py-4 flex flex-col items-center">
-    
-    <!-- Player de Áudio Superior -->
+
     <header class="w-full max-w-xl z-20 mb-6 flex flex-col items-center">
       <div class="w-full bg-slate-950/85 backdrop-blur-md rounded-full px-5 sm:px-6 py-3 border border-slate-400/40 shadow-2xl flex items-center justify-between gap-3 sm:gap-4">
-        
         <div class="flex items-center gap-3">
-          <button id="playBtn" class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-200 via-white to-slate-400 text-slate-900 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer" title="Tocar / Pausar">
+          <button id="playBtn" type="button" class="w-10 h-10 rounded-full bg-gradient-to-tr from-slate-200 via-white to-slate-400 text-slate-900 flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer" title="Tocar / Pausar" aria-label="Tocar ou pausar música">
             <i id="playIcon" class="fas fa-play text-sm ml-0.5"></i>
           </button>
           <div class="hidden sm:block">
@@ -169,63 +144,59 @@
 
         <div class="flex items-center gap-2 sm:gap-3 flex-1 max-w-[160px] sm:max-w-xs">
           <i id="volumeIcon" class="fas fa-volume-down text-slate-300 text-xs sm:text-sm"></i>
-          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" class="w-full" title="Volume">
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" class="w-full" title="Volume" aria-label="Volume da música">
           <i class="fas fa-volume-up text-slate-300 text-xs sm:text-sm"></i>
         </div>
-
         <span id="volumeValue" class="text-xs font-mono text-slate-300 min-w-[35px] text-right">50%</span>
       </div>
     </header>
 
-    <!-- Moldura da Borda Prateada Animada Externa -->
     <div class="silver-running-border w-full">
-      <!-- Card Interior Sem Restrição de Altura (Leitura Fluida) -->
       <main class="glass-card p-6 sm:p-10 text-center flex flex-col items-center">
-        
-        <!-- Detalhe Ornamental Superior -->
         <div class="mb-4 text-slate-300/70 flex items-center justify-center gap-3 w-full">
           <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-slate-300/50"></span>
           <i class="fas fa-sparkles text-xs text-slate-200"></i>
           <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-slate-300/50"></span>
         </div>
 
-        <!-- Título do Card -->
-        <h1 id="pageTitle" class="silver-text-glow font-['Cinzel'] font-bold text-2xl sm:text-3xl md:text-4xl tracking-wider uppercase mb-6 border-b border-slate-300/20 pb-4 w-full">
+        <h1 class="silver-text-glow font-['Cinzel'] font-bold text-2xl sm:text-3xl md:text-4xl tracking-wider uppercase mb-6 border-b border-slate-300/20 pb-4 w-full">
           MUNDOS DIFERENTES
         </h1>
 
-        <!-- Área de Conteúdo Dinâmico -->
-        <div id="contentArea" class="w-full px-2 sm:px-4 py-1 text-left fade-in space-y-5">
-          <!-- O texto é inserido via JavaScript -->
+        <div class="w-full px-2 sm:px-4 py-1 text-left fade-in space-y-5">
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
+            Vim para Belém para resolver algo totalmente inesperado, e tudo ao meu redor foi se tornando um caos. Jamais imaginei que, desde o primeiro dia em que te vi, começaria a me aproximar de você — até porque somos pessoas tão distintas, com pensamentos e caminhos tão diferentes. No entanto, algo em você chamou a minha atenção e me despertou um cuidado genuíno, pois percebi que você não parecia bem.
+          </p>
+
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
+            Jamais pensei que, dali em diante, surgiria gradualmente uma linda amizade. Com a sua voz suave e a sua aparência calma, percebi que eu desejava ver o seu bem a todo instante — mesmo quando quase não nos víamos, a não ser no centro espírita. A sua presença sempre foi algo que me traria um conforto profundo, pois em você eu sempre enxerguei a paz.
+          </p>
+
+          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
+            Aos meus longos anos de vida, já passei por muitas provações nada fáceis, porém com aprendizado para que, de alguma forma, possa extrair coisas boas. Apesar de qualquer coisa, me permito não ser vítima da vida. Nós somos espíritas kardecistas e sabemos que tudo é passageiro e que devemos sempre acreditar em dias melhores. Mas aí veio você e me deu um nó na cabeça! Eu, uma mulher super bem resolvida que gosta de mulheres, jamais me imaginei envolvida com um homem hétero. Somos de universos bem diferentes, mas a sua companhia, seu carinho, seu afeto e seu sorriso me fazem tão bem que não tenho como negar: o que sinto por você é absolutamente um amor genuíno.
+          </p>
         </div>
 
-        <!-- Divisor Ornamental dos Botões -->
         <div class="mt-8 pt-2 flex items-center justify-center gap-2 text-slate-300/60 w-full mb-6">
           <span class="h-[1px] w-16 bg-gradient-to-r from-transparent to-slate-300/40"></span>
           <span class="text-xs tracking-widest font-serif text-slate-300">✧ ✦ ✧</span>
           <span class="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-300/40"></span>
         </div>
 
-        <!-- Botões de Navegação -->
-        <div class="flex items-center justify-between w-full px-2 gap-4">
-          <button id="prevBtn" class="nav-card-btn cursor-pointer rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group disabled-btn">
-            <i class="fas fa-chevron-left text-xs text-slate-300 transform group-hover:-translate-x-1 transition-transform duration-300"></i>
-            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
-              ANTERIOR
-            </span>
-          </button>
+        <nav class="flex items-center justify-between w-full px-2 gap-4" aria-label="Navegação do livro">
+          <a href="index.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
+            <i class="fas fa-chevron-left text-xs text-slate-300"></i>
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">ANTERIOR</span>
+          </a>
 
-          <button id="nextBtn" class="nav-card-btn cursor-pointer rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
-            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
-              PRÓXIMA
-            </span>
-            <i class="fas fa-chevron-right text-xs text-slate-300 transform group-hover:translate-x-1 transition-transform duration-300"></i>
-          </button>
-        </div>
+          <a href="voce_brilha.html" class="nav-card-btn rounded-full px-6 py-2.5 flex items-center justify-center gap-2 group">
+            <span class="font-['Cinzel'] font-semibold text-xs sm:text-sm tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">PRÓXIMA</span>
+            <i class="fas fa-chevron-right text-xs text-slate-300"></i>
+          </a>
+        </nav>
       </main>
     </div>
 
-    <!-- Rodapé -->
     <footer class="mt-5 text-center">
       <p class="silver-text-glow font-['Great_Vibes'] text-2xl sm:text-3xl tracking-wide opacity-90">
         Páginas de um destino inesperado...
@@ -233,111 +204,10 @@
     </footer>
   </div>
 
-  <!-- Elemento de Áudio Global -->
-  <audio id="bgMusic" src="belaeafera.mp3" loop preload="auto"></audio>
+  <!-- O arquivo de áudio precisa estar na mesma pasta deste HTML e ter exatamente este nome. -->
+  <audio id="bgMusic" src="belaefera.mp3" loop preload="auto"></audio>
 
   <script>
-    /* --- ESTRUTURA DE PÁGINAS CORRIGIDA --- */
-    const pages = [
-      {
-        title: "MUNDOS DIFERENTES",
-        content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
-            Vim para Belém para resolver algo totalmente inesperado, e tudo ao meu redor foi se tornando um caos. Jamais imaginei que, desde o primeiro dia em que te vi, começaria a me aproximar de você — até porque somos pessoas tão distintas, com pensamentos e caminhos tão diferentes. No entanto, algo em você chamou a minha atenção e me despertou um cuidado genuíno, pois percebi que você não parecia bem.
-          </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
-            Jamais pensei que, dali em diante, surgiria gradualmente uma linda amizade. Com a sua voz suave e a sua aparência calma, percebi que eu desejava ver o seu bem a todo instante — mesmo quando quase não nos víamos, a não ser no centro espírita. A sua presença sempre foi algo que me traria um conforto profundo, pois em você eu sempre enxerguei a paz.
-          </p>
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
-            Aos meus longos anos de vida, já passei por muitas provações nada fáceis, porém com aprendizado para que, de alguma forma, possa extrair coisas boas. Apesar de qualquer coisa, me permito não ser vítima da vida. Nós somos espíritas kardecistas e sabemos que tudo é passageiro e que devemos sempre acreditar em dias melhores. Mas aí veio você e me deu um nó na cabeça! Eu, uma mulher super bem resolvida que gosta de mulheres, jamais me imaginei envolvida com um homem hétero. Somos de universos bem diferentes, mas a sua companhia, seu carinho, seu afeto e seu sorriso me fazem tão bem que não tenho como negar: o que sinto por você é absolutamente um amor genuíno.
-          </p>
-        `
-      },
-      {
-        title: "O ENCONTRO",
-        content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
-            [Insira aqui a mensagem sobre O Encontro...]
-          </p>
-        `
-      },
-      {
-        title: "VOCÊ BRILHA",
-        content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
-            [Insira aqui a mensagem do capítulo Você Brilha...]
-          </p>
-        `
-      },
-      {
-        title: "VOCÊ É IMPORTANTE",
-        content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
-            [Insira aqui a mensagem do capítulo Você é Importante...]
-          </p>
-        `
-      },
-      {
-        title: "VOCÊ É RADIANTE",
-        content: `
-          <p class="font-['Cormorant_Garamond'] text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-100 font-normal italic">
-            [Insira aqui a mensagem final do capítulo Você é Radiante...]
-          </p>
-        `
-      }
-    ];
-
-    let currentPage = 0;
-
-    const pageTitle = document.getElementById('pageTitle');
-    const contentArea = document.getElementById('contentArea');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    /* --- NAVEGAÇÃO E TRANSIÇÃO SUAVE --- */
-    function renderPage(index) {
-      contentArea.classList.remove('fade-in');
-      contentArea.classList.add('fade-out');
-
-      setTimeout(() => {
-        pageTitle.textContent = pages[index].title;
-        contentArea.innerHTML = pages[index].content;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        contentArea.classList.remove('fade-out');
-        contentArea.classList.add('fade-in');
-
-        if (index === 0) {
-          prevBtn.classList.add('disabled-btn');
-        } else {
-          prevBtn.classList.remove('disabled-btn');
-        }
-
-        if (index === pages.length - 1) {
-          nextBtn.classList.add('disabled-btn');
-        } else {
-          nextBtn.classList.remove('disabled-btn');
-        }
-      }, 350);
-    }
-
-    prevBtn.addEventListener('click', () => {
-      if (currentPage > 0) {
-        currentPage--;
-        renderPage(currentPage);
-      }
-    });
-
-    nextBtn.addEventListener('click', () => {
-      if (currentPage < pages.length - 1) {
-        currentPage++;
-        renderPage(currentPage);
-      }
-    });
-
-    renderPage(currentPage);
-
-    /* --- CONTROLES E PERSISTÊNCIA DA MÚSICA ENTRE PÁGINAS --- */
     const bgMusic = document.getElementById('bgMusic');
     const playBtn = document.getElementById('playBtn');
     const playIcon = document.getElementById('playIcon');
@@ -358,42 +228,27 @@
       }
     }
 
+    // Recupera o estado da música ao abrir outra página do livro.
     window.addEventListener('DOMContentLoaded', () => {
-      const isPlaying = localStorage.getItem('musicPlaying') === 'true';
+      const wasPlaying = localStorage.getItem('musicPlaying') === 'true';
       const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
 
-      if (isPlaying) {
+      if (wasPlaying) {
         bgMusic.currentTime = savedTime;
-        bgMusic.play().then(() => {
-          updatePlayUI(true);
-        }).catch(() => {
-          const unlockAudio = () => {
-            bgMusic.currentTime = parseFloat(localStorage.getItem('musicCurrentTime') || savedTime);
-            bgMusic.play().then(() => {
-              updatePlayUI(true);
-            });
-            window.removeEventListener('click', unlockAudio);
-            window.removeEventListener('touchstart', unlockAudio);
-          };
-          window.addEventListener('click', unlockAudio);
-          window.addEventListener('touchstart', unlockAudio);
-        });
+        bgMusic.play()
+          .then(() => updatePlayUI(true))
+          .catch(() => updatePlayUI(false));
       }
-
-      setInterval(() => {
-        if (!bgMusic.paused) {
-          localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
-        }
-      }, 250);
     });
 
-    playBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
+    playBtn.addEventListener('click', () => {
       if (bgMusic.paused) {
-        bgMusic.play().then(() => {
-          updatePlayUI(true);
-          localStorage.setItem('musicPlaying', 'true');
-        }).catch(err => console.log(err));
+        bgMusic.play()
+          .then(() => {
+            updatePlayUI(true);
+            localStorage.setItem('musicPlaying', 'true');
+          })
+          .catch(error => console.error('Não foi possível iniciar a música:', error));
       } else {
         bgMusic.pause();
         updatePlayUI(false);
@@ -401,25 +256,27 @@
       }
     });
 
-    volumeSlider.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      bgMusic.volume = val;
-      volumeValue.textContent = `${Math.round(val * 100)}%`;
-      
-      if (val === 0) {
+    volumeSlider.addEventListener('input', (event) => {
+      const value = parseFloat(event.target.value);
+      bgMusic.volume = value;
+      volumeValue.textContent = `${Math.round(value * 100)}%`;
+
+      if (value === 0) {
         volumeIcon.className = 'fas fa-volume-mute text-slate-400 text-xs sm:text-sm';
-      } else if (val < 0.5) {
+      } else if (value < 0.5) {
         volumeIcon.className = 'fas fa-volume-down text-slate-300 text-xs sm:text-sm';
       } else {
         volumeIcon.className = 'fas fa-volume-up text-slate-200 text-xs sm:text-sm';
       }
     });
 
+    // Salva a posição da música antes de sair desta página.
     window.addEventListener('beforeunload', () => {
-      localStorage.setItem('musicCurrentTime', bgMusic.currentTime.toString());
+      localStorage.setItem('musicCurrentTime', String(bgMusic.currentTime));
+      localStorage.setItem('musicPlaying', String(!bgMusic.paused));
     });
 
-    /* --- CANVAS CÓSMICO COM ESTRELAS CADENTES --- */
+    // Fundo cósmico com estrelas cadentes.
     const canvas = document.getElementById('cosmicCanvas');
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
@@ -443,6 +300,7 @@
     }
 
     const shootingStars = [];
+
     class ShootingStar {
       constructor() { this.reset(); }
       reset() {
@@ -482,36 +340,43 @@
 
     function animateCosmos() {
       ctx.clearRect(0, 0, width, height);
-      const grad = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, Math.max(width, height));
-      grad.addColorStop(0, '#0d0f17');
-      grad.addColorStop(1, '#030407');
-      ctx.fillStyle = grad;
+      const gradient = ctx.createRadialGradient(
+        width / 2, height / 2, 10,
+        width / 2, height / 2, Math.max(width, height)
+      );
+      gradient.addColorStop(0, '#0d0f17');
+      gradient.addColorStop(1, '#030407');
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
-      stars.forEach(s => {
-        if (s.growing) { s.alpha += s.speed; if (s.alpha >= 1) s.growing = false; }
-        else { s.alpha -= s.speed; if (s.alpha <= 0.2) s.growing = true; }
-        ctx.fillStyle = `rgba(226, 232, 240, ${s.alpha})`;
+      stars.forEach(star => {
+        if (star.growing) {
+          star.alpha += star.speed;
+          if (star.alpha >= 1) star.growing = false;
+        } else {
+          star.alpha -= star.speed;
+          if (star.alpha <= 0.2) star.growing = true;
+        }
+        ctx.fillStyle = `rgba(226, 232, 240, ${star.alpha})`;
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fill();
       });
 
       if (Math.random() < 0.03 && shootingStars.length < 3) {
         shootingStars.push(new ShootingStar());
       }
-      shootingStars.forEach((ss, index) => {
-        ss.update();
-        ss.draw();
-        if (!ss.active) shootingStars.splice(index, 1);
-      });
+
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        shootingStars[i].update();
+        shootingStars[i].draw();
+        if (!shootingStars[i].active) shootingStars.splice(i, 1);
+      }
 
       requestAnimationFrame(animateCosmos);
     }
 
-    window.onload = function() {
-      animateCosmos();
-    };
+    animateCosmos();
   </script>
 </body>
 </html>
